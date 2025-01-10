@@ -1,9 +1,9 @@
 package main
 
 import (
+	"Groupie_Tracker/GetAPI"
+	"Groupie_Tracker/handler"
 	"log"
-	"serveurTest/GetAPI"
-	"serveurTest/handler"
 )
 
 func main() {
