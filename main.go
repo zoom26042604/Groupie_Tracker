@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	server := handler.NewServer()
+	server := handler.NewServer(10)
 	apiClient := GetAPI.NewAPIClient("https://groupietrackers.herokuapp.com")
 
 	if err := server.LoadData(apiClient); err != nil {

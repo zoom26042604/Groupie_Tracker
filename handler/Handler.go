@@ -5,22 +5,27 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"sync"
+	"time"
 
 	"serveurTest/GetAPI"
 )
 
 type Server struct {
-	Artists   []GetAPI.ArtistAPI
-	Locations GetAPI.LocationsAPI
-	Dates     GetAPI.DatesAPI
-	Relations GetAPI.RelationAPI
-	Mu        sync.RWMutex
+	Artists       []GetAPI.ArtistAPI
+	Locations     GetAPI.LocationsAPI
+	Dates         GetAPI.DatesAPI
+	Relations     GetAPI.RelationAPI
+	Mu            sync.RWMutex
+	ArtistsToShow int
 }
 
-func NewServer() *Server {
-	return &Server{}
+func NewServer(artistsToShow int) *Server {
+	return &Server{
+		ArtistsToShow: artistsToShow,
+	}
 }
 
 func (s *Server) LoadData(client *GetAPI.APIClient) error {
@@ -106,7 +111,13 @@ func (s *Server) StartServer() {
 		w.Header().Set("Content-Type", "text/html")
 		s.Mu.RLock()
 		defer s.Mu.RUnlock()
-		if err := tmpl.Execute(w, s); err != nil {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(s.Artists), func(i, j int) { s.Artists[i], s.Artists[j] = s.Artists[j], s.Artists[i] })
+		artistsToShow := s.Artists
+		if len(s.Artists) > s.ArtistsToShow {
+			artistsToShow = s.Artists[:s.ArtistsToShow]
+		}
+		if err := tmpl.Execute(w, struct{ Artists []GetAPI.ArtistAPI }{Artists: artistsToShow}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
