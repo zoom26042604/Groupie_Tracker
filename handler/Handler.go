@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"serveurTest/GetAPI"
+	"Groupie_Tracker/GetAPI"
 )
 
 type Server struct {
