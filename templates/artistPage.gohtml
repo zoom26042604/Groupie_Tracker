@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Artist.Name}}</title>
+    <link rel="stylesheet" href="/static/css/artistPage.css">
+</head>
+<body>
+<h1>{{.Artist.Name}}</h1>
+<img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" style="width:20%;height:auto;">
+<p><strong>Members:</strong></p>
+<ul>
+    {{range .Artist.Members}}
+        <li>{{.}}</li>
+    {{end}}
+</ul>
+</body>
+</html>
