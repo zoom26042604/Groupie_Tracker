@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"serveurTest/GetAPI"
+	"Groupie_Tracker/GetAPI"
 )
 
 type Server struct {
@@ -18,7 +18,6 @@ type Server struct {
 	Locations     GetAPI.LocationsAPI
 	Dates         GetAPI.DatesAPI
 	Relations     GetAPI.RelationAPI
-	Mu            sync.RWMutex
 	ArtistsToShow int
 }
 
@@ -41,9 +40,7 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 			errChan <- fmt.Errorf("artists fetch error: %v", err)
 			return
 		}
-		s.Mu.Lock()
 		s.Artists = artists
-		s.Mu.Unlock()
 	}()
 
 	go func() {
@@ -53,9 +50,7 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 			errChan <- fmt.Errorf("locations fetch error: %v", err)
 			return
 		}
-		s.Mu.Lock()
 		s.Locations = locations
-		s.Mu.Unlock()
 	}()
 
 	go func() {
@@ -65,9 +60,7 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 			errChan <- fmt.Errorf("dates fetch error: %v", err)
 			return
 		}
-		s.Mu.Lock()
 		s.Dates = dates
-		s.Mu.Unlock()
 	}()
 
 	go func() {
@@ -77,9 +70,7 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 			errChan <- fmt.Errorf("relations fetch error: %v", err)
 			return
 		}
-		s.Mu.Lock()
 		s.Relations = relations
-		s.Mu.Unlock()
 	}()
 
 	wg.Wait()
@@ -109,8 +100,6 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
-		s.Mu.RLock()
-		defer s.Mu.RUnlock()
 		rand.Seed(time.Now().UnixNano())
 		rand.Shuffle(len(s.Artists), func(i, j int) { s.Artists[i], s.Artists[j] = s.Artists[j], s.Artists[i] })
 		artistsToShow := s.Artists
@@ -124,30 +113,22 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/api/artists", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		s.Mu.RLock()
 		json.NewEncoder(w).Encode(s.Artists)
-		s.Mu.RUnlock()
 	})
 
 	http.HandleFunc("/api/locations", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		s.Mu.RLock()
 		json.NewEncoder(w).Encode(s.Locations)
-		s.Mu.RUnlock()
 	})
 
 	http.HandleFunc("/api/dates", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		s.Mu.RLock()
 		json.NewEncoder(w).Encode(s.Dates)
-		s.Mu.RUnlock()
 	})
 
 	http.HandleFunc("/api/relations", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		s.Mu.RLock()
 		json.NewEncoder(w).Encode(s.Relations)
-		s.Mu.RUnlock()
 	})
 
 	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
@@ -163,8 +144,6 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/homePage", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
-		s.Mu.RLock()
-		defer s.Mu.RUnlock()
 		if err := tmpl.Execute(w, s); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -172,8 +151,6 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/artist/", func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len("/artist/"):]
-		s.Mu.RLock()
-		defer s.Mu.RUnlock()
 		var artist GetAPI.ArtistAPI
 		for _, a := range s.Artists {
 			if fmt.Sprintf("%d", a.ID) == id {
@@ -193,6 +170,19 @@ func (s *Server) StartServer() {
 		w.Header().Set("Content-Type", "text/html")
 		if err := tmpl.Execute(w, struct{ Artist GetAPI.ArtistAPI }{Artist: artist}); err != nil {
 			log.Printf("template execution error: %v", err)
+		}
+	})
+
+	http.HandleFunc("/about", func(w http.ResponseWriter, r *http.Request) {
+
+		tmpl, err := template.ParseFiles("templates/about.gohtml")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html")
+		if err := tmpl.Execute(w, s); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
 

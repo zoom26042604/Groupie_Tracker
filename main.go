@@ -1,13 +1,13 @@
 package main
 
 import (
+	"Groupie_Tracker/GetAPI"
+	"Groupie_Tracker/handler"
 	"log"
-	"serveurTest/GetAPI"
-	"serveurTest/handler"
 )
 
 func main() {
-	server := handler.NewServer(10)
+	server := handler.NewServer(12)
 	apiClient := GetAPI.NewAPIClient("https://groupietrackers.herokuapp.com")
 
 	if err := server.LoadData(apiClient); err != nil {
