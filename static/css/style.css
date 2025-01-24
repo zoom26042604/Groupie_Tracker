@@ -103,61 +103,7 @@ li:hover .artist-info {
     }
 }
 
-.circle-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #57d53b;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
 
-.circle-button:hover {
-    background-color: #45a32a;
-}
-
-.circle-button svg {
-    width: 24px;
-    height: 24px;
-    fill: white;
-}
-
-.search-bar {
-    position: fixed;
-    top: 20px;
-    right: 80px;
-    width: 0;
-    height: 50px;
-    background-color: #57d53b;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    font-size: 18px;
-    padding: 0 20px;
-    transition: width 0.3s ease-in-out;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.search-bar input {
-    background: transparent;
-    border: none;
-    color: white;
-    outline: none;
-    width: 100%;
-}
-
-.circle-button:focus + .search-bar,
-.search-bar:focus-within {
-    width: 200px;
-}
 
 table{
     margin-left: auto;
