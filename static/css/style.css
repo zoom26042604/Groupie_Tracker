@@ -103,59 +103,37 @@ li:hover .artist-info {
     }
 }
 
-.circle-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #57d53b;
-    border: none;
-    border-radius: 50%;
+
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+    color: #57d53b;
+    border-collapse: separate;
+    border-spacing: 50px;
+    padding-top: 3rem;
+}
+
+.img{
+    width: 150px;
+}
+
+.text{
     display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    margin: 0 auto;
+    height: 40px;
+    width: 90px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.circle-button:hover {
-    background-color: #45a32a;
+.logo{
+    display: block;
+    margin: 0 auto;
+    height: 60px;
+    width: 60px;
+    left: 5%;
+    position: absolute;
+    transform: translate(-50%, -50%);
 }
-
-.circle-button svg {
-    width: 24px;
-    height: 24px;
-    fill: white;
-}
-
-.search-bar {
-    position: fixed;
-    top: 20px;
-    right: 80px;
-    width: 0;
-    height: 50px;
-    background-color: #57d53b;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    font-size: 18px;
-    padding: 0 20px;
-    transition: width 0.3s ease-in-out;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.search-bar input {
-    background: transparent;
-    border: none;
-    color: white;
-    outline: none;
-    width: 100%;
-}
-
-.circle-button:focus + .search-bar,
-.search-bar:focus-within {
-    width: 200px;
-}
-
