@@ -2,52 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>POSTIFY</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-
+    <title>{{.Artist.Name}}</title>
+    <link rel="stylesheet" href="/static/css/artistPage.css">
 </head>
 <body>
-
-
-<img  class="text" src="/static/img/TEXT LOGO.PNG" alt="logo" >
-<img  class="logo" src="/static/img/POSTIFY.png" alt="logo" >
-
-
-
-
-
-
-<button class="circle-button">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M10 2a8 8 0 105.293 14.707l4.707 4.707-1.414 1.414-4.707-4.707A8 8 0 1010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
-    </svg>
-</button>
-
-
-
-
-
-<table>
-    <thead>
-    <tr>
-        <th><a href="http://localhost:8080">Acceuil</a></th>
-        <th><a href="http://localhost:8080/homePage">Artists</a></th>
-        <th><a href="http://localhost:8080/about">About</a></th>
-    </tr>
-    </thead>
-</table>
-
-
+<h1>{{.Artist.Name}}</h1>
+<img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" style="width:20%;height:auto;">
+<p><strong>Members:</strong></p>
 <ul>
-    {{range .Artists}}
-        <li>
-            <a href="/artist/{{.ID}}">
-                <img src="{{.Image}}" alt="Artist cover">
-                <div class="artist-info">
-                    <h3>{{.Name}}</h3>
-                </div>
-            </a>
-        </li>
+    {{range .Artist.Members}}
+        <li>{{.}}</li>
+    {{end}}
+</ul>
+<p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
+<p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+
+<p><strong>Locations:</strong></p>
+<ul>
+    {{range .Locations.Locations}}
+        <li>{{.}}</li>
+    {{end}}
+</ul>
+
+<p><strong>Dates:</strong></p>
+<ul>
+    {{range .Dates.Dates}}
+        <li>{{. | removeAsterisks}}</li>
     {{end}}
 </ul>
 </body>
