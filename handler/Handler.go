@@ -205,6 +205,19 @@ func (s *Server) StartServer() {
 		}
 	})
 
+	http.HandleFunc("/about", func(w http.ResponseWriter, r *http.Request) {
+
+		tmpl, err := template.ParseFiles("templates/about.gohtml")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "text/html")
+		if err := tmpl.Execute(w, s); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
+
 	port := ":8080"
 	fmt.Printf("Server starting on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
