@@ -27,7 +27,7 @@
 <p><strong>Dates:</strong></p>
 <ul>
     {{range .Dates.Dates}}
-        <li>{{.}}</li>
+        <li>{{. | removeAsterisks}}</li>
     {{end}}
 </ul>
 </body>
