@@ -41,6 +41,46 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 			return
 		}
 		s.Artists = artists
+
+		for _, artist := range s.Artists {
+
+			locationPath := artist.Locations
+			if len(locationPath) > 0 && locationPath[:4] == "http" {
+
+				locationPath = artist.Locations[len("https://groupietrackers.herokuapp.com"):]
+			}
+
+			var locations GetAPI.LocationsAPI
+			if err := client.Fetch(locationPath, &locations); err != nil {
+				errChan <- fmt.Errorf("locations fetch error: %v", err)
+				return
+			}
+			s.Locations = locations
+
+			datesPath := artist.ConcertDates
+			if len(datesPath) > 0 && datesPath[:4] == "http" {
+				datesPath = artist.ConcertDates[len("https://groupietrackers.herokuapp.com"):]
+			}
+
+			var dates GetAPI.DatesAPI
+			if err := client.Fetch(datesPath, &dates); err != nil {
+				errChan <- fmt.Errorf("dates fetch error: %v", err)
+				return
+			}
+			s.Dates = dates
+
+			relationsPath := artist.Relations
+			if len(relationsPath) > 0 && relationsPath[:4] == "http" {
+				relationsPath = artist.Relations[len("https://groupietrackers.herokuapp.com"):]
+			}
+
+			var relations GetAPI.RelationAPI
+			if err := client.Fetch(relationsPath, &relations); err != nil {
+				errChan <- fmt.Errorf("relations fetch error: %v", err)
+				return
+			}
+			s.Relations = relations
+		}
 	}()
 
 	go func() {
@@ -151,14 +191,14 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/artist/", func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len("/artist/"):]
-		var artist GetAPI.ArtistAPI
-		for _, a := range s.Artists {
-			if fmt.Sprintf("%d", a.ID) == id {
-				artist = a
+		var combinedData GetAPI.CombinedData
+		for _, data := range GetAPI.GetCombinedData(s.Artists, s.Locations, s.Dates, s.Relations) {
+			if fmt.Sprintf("%d", data.Artist.ID) == id {
+				combinedData = data
 				break
 			}
 		}
-		if artist.ID == 0 {
+		if combinedData.Artist.ID == 0 {
 			http.NotFound(w, r)
 			return
 		}
@@ -168,7 +208,7 @@ func (s *Server) StartServer() {
 			return
 		}
 		w.Header().Set("Content-Type", "text/html")
-		if err := tmpl.Execute(w, struct{ Artist GetAPI.ArtistAPI }{Artist: artist}); err != nil {
+		if err := tmpl.Execute(w, combinedData); err != nil {
 			log.Printf("template execution error: %v", err)
 		}
 	})
