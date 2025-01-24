@@ -164,5 +164,31 @@ table{
     margin-right: auto;
     color: #57d53b;
     border-collapse: separate;
-    border-spacing: 25px;
+    border-spacing: 50px;
+    padding-top: 3rem;
 }
+
+.img{
+    width: 150px;
+}
+
+.text{
+    display: flex;
+    margin: 0 auto;
+    height: 40px;
+    width: 90px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logo{
+    display: block;
+    margin: 0 auto;
+    height: 60px;
+    width: 60px;
+    left: 5%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
