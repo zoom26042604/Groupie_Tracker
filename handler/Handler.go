@@ -7,23 +7,31 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 
 	"Groupie_Tracker/GetAPI"
 )
 
+type ArtistData struct {
+	Artist    GetAPI.ArtistAPI
+	Locations GetAPI.LocationsAPI
+	Dates     GetAPI.DatesAPI
+	Relations GetAPI.RelationAPI
+}
+
 type Server struct {
 	Artists       []GetAPI.ArtistAPI
-	Locations     GetAPI.LocationsAPI
-	Dates         GetAPI.DatesAPI
-	Relations     GetAPI.RelationAPI
+	ArtistDataMap map[int]ArtistData
 	ArtistsToShow int
 }
 
 func NewServer(artistsToShow int) *Server {
 	return &Server{
 		ArtistsToShow: artistsToShow,
+		ArtistDataMap: make(map[int]ArtistData),
 	}
 }
 
@@ -31,7 +39,7 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 	var wg sync.WaitGroup
 	errChan := make(chan error, 4)
 
-	wg.Add(4)
+	wg.Add(1)
 
 	go func() {
 		defer wg.Done()
@@ -41,36 +49,43 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 			return
 		}
 		s.Artists = artists
-	}()
 
-	go func() {
-		defer wg.Done()
-		var locations GetAPI.LocationsAPI
-		if err := client.Fetch("/api/locations", &locations); err != nil {
-			errChan <- fmt.Errorf("locations fetch error: %v", err)
-			return
-		}
-		s.Locations = locations
-	}()
+		for _, artist := range s.Artists {
+			var artistData ArtistData
+			artistData.Artist = artist
 
-	go func() {
-		defer wg.Done()
-		var dates GetAPI.DatesAPI
-		if err := client.Fetch("/api/dates", &dates); err != nil {
-			errChan <- fmt.Errorf("dates fetch error: %v", err)
-			return
-		}
-		s.Dates = dates
-	}()
+			locationPath := artist.Locations
+			if len(locationPath) > 0 && locationPath[:4] == "http" {
+				locationPath = artist.Locations[len("https://groupietrackers.herokuapp.com"):]
+			}
 
-	go func() {
-		defer wg.Done()
-		var relations GetAPI.RelationAPI
-		if err := client.Fetch("/api/relation", &relations); err != nil {
-			errChan <- fmt.Errorf("relations fetch error: %v", err)
-			return
+			if err := client.Fetch(locationPath, &artistData.Locations); err != nil {
+				errChan <- fmt.Errorf("locations fetch error: %v", err)
+				return
+			}
+
+			datesPath := artist.ConcertDates
+			if len(datesPath) > 0 && datesPath[:4] == "http" {
+				datesPath = artist.ConcertDates[len("https://groupietrackers.herokuapp.com"):]
+			}
+
+			if err := client.Fetch(datesPath, &artistData.Dates); err != nil {
+				errChan <- fmt.Errorf("dates fetch error: %v", err)
+				return
+			}
+
+			relationsPath := artist.Relations
+			if len(relationsPath) > 0 && relationsPath[:4] == "http" {
+				relationsPath = artist.Relations[len("https://groupietrackers.herokuapp.com"):]
+			}
+
+			if err := client.Fetch(relationsPath, &artistData.Relations); err != nil {
+				errChan <- fmt.Errorf("relations fetch error: %v", err)
+				return
+			}
+
+			s.ArtistDataMap[artist.ID] = artistData
 		}
-		s.Relations = relations
 	}()
 
 	wg.Wait()
@@ -91,7 +106,16 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 }
 
 func (s *Server) StartServer() {
-	tmpl, err := template.ParseFiles("templates/index.gohtml")
+	funcMap := template.FuncMap{
+		"removeAsterisks": removeAsterisks,
+	}
+
+	tmpl, err := template.New("index.gohtml").Funcs(funcMap).ParseFiles("templates/index.gohtml")
+	if err != nil {
+		log.Fatalf("Failed to parse template: %v", err)
+	}
+
+	artistTmpl, err := template.New("artistPage.gohtml").Funcs(funcMap).ParseFiles("templates/artistPage.gohtml")
 	if err != nil {
 		log.Fatalf("Failed to parse template: %v", err)
 	}
@@ -118,17 +142,29 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/api/locations", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(s.Locations)
+		var locations []GetAPI.LocationsAPI
+		for _, data := range s.ArtistDataMap {
+			locations = append(locations, data.Locations)
+		}
+		json.NewEncoder(w).Encode(locations)
 	})
 
 	http.HandleFunc("/api/dates", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(s.Dates)
+		var dates []GetAPI.DatesAPI
+		for _, data := range s.ArtistDataMap {
+			dates = append(dates, data.Dates)
+		}
+		json.NewEncoder(w).Encode(dates)
 	})
 
 	http.HandleFunc("/api/relations", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(s.Relations)
+		var relations []GetAPI.RelationAPI
+		for _, data := range s.ArtistDataMap {
+			relations = append(relations, data.Relations)
+		}
+		json.NewEncoder(w).Encode(relations)
 	})
 
 	http.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
@@ -151,24 +187,20 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/artist/", func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len("/artist/"):]
-		var artist GetAPI.ArtistAPI
-		for _, a := range s.Artists {
-			if fmt.Sprintf("%d", a.ID) == id {
-				artist = a
-				break
-			}
-		}
-		if artist.ID == 0 {
+		artistID, err := strconv.Atoi(id)
+		if err != nil {
 			http.NotFound(w, r)
 			return
 		}
-		tmpl, err := template.ParseFiles("templates/artistPage.gohtml")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+
+		artistData, ok := s.ArtistDataMap[artistID]
+		if !ok {
+			http.NotFound(w, r)
 			return
 		}
+
 		w.Header().Set("Content-Type", "text/html")
-		if err := tmpl.Execute(w, struct{ Artist GetAPI.ArtistAPI }{Artist: artist}); err != nil {
+		if err := artistTmpl.Execute(w, artistData); err != nil {
 			log.Printf("template execution error: %v", err)
 		}
 	})
@@ -176,4 +208,8 @@ func (s *Server) StartServer() {
 	port := ":8080"
 	fmt.Printf("Server starting on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
+}
+
+func removeAsterisks(s string) string {
+	return strings.Replace(s, "*", "", -1)
 }

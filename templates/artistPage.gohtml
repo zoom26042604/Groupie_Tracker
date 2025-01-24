@@ -14,5 +14,21 @@
         <li>{{.}}</li>
     {{end}}
 </ul>
+<p><strong>First Album:</strong> {{.Artist.FirstAlbum}}</p>
+<p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+
+<p><strong>Locations:</strong></p>
+<ul>
+    {{range .Locations.Locations}}
+        <li>{{.}}</li>
+    {{end}}
+</ul>
+
+<p><strong>Dates:</strong></p>
+<ul>
+    {{range .Dates.Dates}}
+        <li>{{. | removeAsterisks}}</li>
+    {{end}}
+</ul>
 </body>
 </html>
