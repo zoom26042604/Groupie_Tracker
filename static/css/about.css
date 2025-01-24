@@ -49,3 +49,13 @@ table{
     border-collapse: separate;
     border-spacing: 25px;
 }
+
+a {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
