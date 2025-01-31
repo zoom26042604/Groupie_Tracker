@@ -234,7 +234,7 @@ func removeAsterisks(s string) string {
 func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 	search := r.URL.Query().Get("search")
 	creationDate := r.URL.Query().Get("creation_date")
-	firstAlbumDate := r.URL.Query().Get("first_album_date")
+	firstAlbumDates := r.URL.Query()["first_album_date"]
 	members := r.URL.Query()["members"]
 	location := r.URL.Query().Get("location")
 
@@ -244,15 +244,34 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 		if search != "" && !strings.Contains(strings.ToLower(artist.Name), strings.ToLower(search)) {
 			continue
 		}
-		if creationDate != "" {
+		if creationDate != "" && creationDate != "1987" {
 			year, err := strconv.Atoi(creationDate)
 			if err != nil || artist.CreationDate != year {
 				continue
 			}
 		}
-		if firstAlbumDate != "" {
+		if len(firstAlbumDates) > 0 {
 			parsedFirstAlbumDate, err := time.Parse("02-01-2006", artist.FirstAlbum)
-			if err != nil || !strings.Contains(parsedFirstAlbumDate.Format("02-01-2006"), firstAlbumDate) {
+			if err != nil {
+				continue
+			}
+			dateMatched := false
+			for _, dateRange := range firstAlbumDates {
+				years := strings.Split(dateRange, "-")
+				if len(years) != 2 {
+					continue
+				}
+				startYear, err1 := strconv.Atoi(years[0])
+				endYear, err2 := strconv.Atoi(years[1])
+				if err1 != nil || err2 != nil {
+					continue
+				}
+				if parsedFirstAlbumDate.Year() >= startYear && parsedFirstAlbumDate.Year() <= endYear {
+					dateMatched = true
+					break
+				}
+			}
+			if !dateMatched {
 				continue
 			}
 		}
@@ -262,8 +281,21 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 		}
-		if location != "" && !strings.Contains(strings.ToLower(artist.Locations), strings.ToLower(location)) {
-			continue
+		if location != "" {
+			artistData, ok := s.ArtistDataMap[artist.ID]
+			if !ok {
+				continue
+			}
+			locationFound := false
+			for _, loc := range artistData.Locations.Locations {
+				if strings.Contains(strings.ToLower(loc), strings.ToLower(location)) {
+					locationFound = true
+					break
+				}
+			}
+			if !locationFound {
+				continue
+			}
 		}
 		filteredArtists = append(filteredArtists, artist)
 	}

@@ -19,11 +19,20 @@
     <div>
         <label>Creation Date:</label>
         <div class="slidecontainer">
-            <input type="range" id="creation_date" name="creation_date" min="1950" max="2025" value="1987,5" class="slider" oninput="updateRangeValue('creation_date', 'creation_date_value')">
+            <input type="range" id="creation_date" name="creation_date" min="1950" max="2025" value="1987" class="slider" oninput="updateRangeValue('creation_date', 'creation_date_value')">
             <span id="creation_date_value">1987</span>
         </div>
     </div>
-    <input type="date" name="first_album_date" placeholder="First Album Year" min="1900" max="2100">
+    <div>
+        <label>First Album Date:</label>
+        <div>
+            <input type="checkbox" name="first_album_date" value="1960-1970"> 1960-1970
+            <input type="checkbox" name="first_album_date" value="1970-1980"> 1970-1980
+            <input type="checkbox" name="first_album_date" value="1980 - 1990"> 1980 - 1990
+            <input type="checkbox" name="first_album_date" value="1990-2000"> 1990-2000
+            <input type="checkbox" name="first_album_date" value="2010-2020"> 2010-2020
+        </div>
+    </div>
     <div>
         <label>Number of Members:</label>
         <div>
@@ -36,8 +45,13 @@
             <input type="checkbox" name="members" value="7"> 7
         </div>
     </div>
-    <input type="text" name="location" placeholder="Location of Concerts">
-    <button type="submit">Search</button>
+    <div>
+        <label>Location of Concert</label>
+        <div>
+            <input type="text" name="location" placeholder="Location of Concerts">
+            <button type="submit">Search</button>
+        </div>
+    </div>
 </form>
 <div id="results">
     {{range .Artists}}
