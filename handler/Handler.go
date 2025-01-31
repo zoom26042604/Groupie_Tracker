@@ -250,8 +250,11 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 		}
-		if firstAlbumDate != "" && !strings.Contains(artist.FirstAlbum, firstAlbumDate) {
-			continue
+		if firstAlbumDate != "" {
+			parsedFirstAlbumDate, err := time.Parse("02-01-2006", artist.FirstAlbum)
+			if err != nil || !strings.Contains(parsedFirstAlbumDate.Format("02-01-2006"), firstAlbumDate) {
+				continue
+			}
 		}
 		if len(members) > 0 {
 			memberCount := strconv.Itoa(len(artist.Members))

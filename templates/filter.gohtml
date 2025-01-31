@@ -4,12 +4,25 @@
     <meta charset="UTF-8">
     <title>Filter</title>
     <link rel="stylesheet" href="/static/css/filter.css">
+    <script>
+        function updateRangeValue(inputId, displayId) {
+            var input = document.getElementById(inputId);
+            var display = document.getElementById(displayId);
+            display.textContent = input.value;
+        }
+    </script>
 </head>
 <body>
 <h1>Filter Page</h1>
 <form method="GET" action="/filter">
-    <input type="text" name="search" placeholder="Search for an artist...">
-    <input type="number" name="creation_date" placeholder="Creation" min="1900" max="2100">
+    <input type="text" name="search" placeholder="Search for an artist ...">
+    <div>
+        <label>Creation Date:</label>
+        <div class="slidecontainer">
+            <input type="range" id="creation_date" name="creation_date" min="1950" max="2025" value="1987,5" class="slider" oninput="updateRangeValue('creation_date', 'creation_date_value')">
+            <span id="creation_date_value">1987</span>
+        </div>
+    </div>
     <input type="date" name="first_album_date" placeholder="First Album Year" min="1900" max="2100">
     <div>
         <label>Number of Members:</label>
