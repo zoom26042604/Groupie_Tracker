@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter</title>
+    <link rel="stylesheet" href="/static/css/filter.css">
+</head>
+<body>
+<h1>Filter Page</h1>
+<form method="GET" action="/filter">
+    <input type="text" name="search" placeholder="Search for an artist...">
+    <select name="filter">
+        <option value="all">All</option>
+        <option value="band">Band</option>
+        <option value="solo">Solo</option>
+    </select>
+    <button type="submit">Search</button>
+</form>
+<div id="results">
+    {{range .Artists}}
+        <div class="artist">
+            <h2>{{.Name}}</h2>
+            <p>{{.Genre}}</p>
+        </div>
+    {{end}}
+</div>
+</body>
+</html>

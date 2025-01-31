@@ -108,6 +108,8 @@ func (s *Server) LoadData(client *GetAPI.APIClient) error {
 func (s *Server) StartServer() {
 	funcMap := template.FuncMap{
 		"removeAsterisks": removeAsterisks,
+		"formatDate":      formatDate,
+		"formatLocation":  formatLocation,
 	}
 
 	tmpl, err := template.New("index.gohtml").Funcs(funcMap).ParseFiles("templates/index.gohtml")
@@ -218,6 +220,8 @@ func (s *Server) StartServer() {
 		}
 	})
 
+	http.HandleFunc("/filter", s.FilterHandler)
+
 	port := ":8080"
 	fmt.Printf("Server starting on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
@@ -225,4 +229,51 @@ func (s *Server) StartServer() {
 
 func removeAsterisks(s string) string {
 	return strings.Replace(s, "*", "", -1)
+}
+
+func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/filter.gohtml")
+	if err != nil {
+		http.Error(w, "Unable to load template", http.StatusInternalServerError)
+		return
+	}
+	tmpl.Execute(w, nil)
+}
+
+func formatDate(date string) string {
+	parts := strings.Split(date, "-")
+	if len(parts) != 3 {
+		return date
+	}
+
+	monthMap := map[string]string{
+		"01": "January", "02": "February", "03": "March", "04": "April",
+		"05": "May", "06": "June", "07": "July", "08": "August",
+		"09": "September", "10": "October", "11": "November", "12": "December",
+	}
+
+	day := parts[0]
+	month := monthMap[parts[1]]
+	year := parts[2]
+
+	return fmt.Sprintf("%s %s %s", day, month, year)
+}
+
+func formatLocation(location string) string {
+	location = strings.ReplaceAll(location, "_", " ")
+	location = strings.ReplaceAll(location, "-", " ")
+
+	words := strings.Fields(location)
+	if len(words) < 2 {
+		return strings.Title(location)
+	}
+
+	for i, word := range words {
+		words[i] = strings.Title(word)
+	}
+
+	city := strings.Join(words[:len(words)-1], " ")
+	countryOrContinent := strings.ToUpper(words[len(words)-1])
+
+	return fmt.Sprintf("%s, %s", city, countryOrContinent)
 }
