@@ -232,12 +232,58 @@ func removeAsterisks(s string) string {
 }
 
 func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
+	search := r.URL.Query().Get("search")
+	creationDate := r.URL.Query().Get("creation_date")
+	firstAlbumDate := r.URL.Query().Get("first_album_date")
+	members := r.URL.Query()["members"]
+	location := r.URL.Query().Get("location")
+
+	var filteredArtists []GetAPI.ArtistAPI
+
+	for _, artist := range s.Artists {
+		if search != "" && !strings.Contains(strings.ToLower(artist.Name), strings.ToLower(search)) {
+			continue
+		}
+		if creationDate != "" {
+			year, err := strconv.Atoi(creationDate)
+			if err != nil || artist.CreationDate != year {
+				continue
+			}
+		}
+		if firstAlbumDate != "" && !strings.Contains(artist.FirstAlbum, firstAlbumDate) {
+			continue
+		}
+		if len(members) > 0 {
+			memberCount := strconv.Itoa(len(artist.Members))
+			if !contains(members, memberCount) {
+				continue
+			}
+		}
+		if location != "" && !strings.Contains(strings.ToLower(artist.Locations), strings.ToLower(location)) {
+			continue
+		}
+		filteredArtists = append(filteredArtists, artist)
+	}
+
 	tmpl, err := template.ParseFiles("templates/filter.gohtml")
 	if err != nil {
-		http.Error(w, "Unable to load template", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	tmpl.Execute(w, nil)
+
+	w.Header().Set("Content-Type", "text/html")
+	if err := tmpl.Execute(w, struct{ Artists []GetAPI.ArtistAPI }{Artists: filteredArtists}); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func contains(slice []string, item string) bool {
+	for _, s := range slice {
+		if s == item {
+			return true
+		}
+	}
+	return false
 }
 
 func formatDate(date string) string {

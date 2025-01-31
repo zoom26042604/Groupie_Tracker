@@ -9,18 +9,27 @@
 <h1>Filter Page</h1>
 <form method="GET" action="/filter">
     <input type="text" name="search" placeholder="Search for an artist...">
-    <select name="filter">
-        <option value="all">All</option>
-        <option value="band">Band</option>
-        <option value="solo">Solo</option>
-    </select>
+    <input type="number" name="creation_date" placeholder="Creation" min="1900" max="2100">
+    <input type="date" name="first_album_date" placeholder="First Album Year" min="1900" max="2100">
+    <div>
+        <label>Number of Members:</label>
+        <div>
+            <input type="checkbox" name="members" value="1"> 1
+            <input type="checkbox" name="members" value="2"> 2
+            <input type="checkbox" name="members" value="3"> 3
+            <input type="checkbox" name="members" value="4"> 4
+            <input type="checkbox" name="members" value="5"> 5
+            <input type="checkbox" name="members" value="6"> 6
+            <input type="checkbox" name="members" value="7"> 7
+        </div>
+    </div>
+    <input type="text" name="location" placeholder="Location of Concerts">
     <button type="submit">Search</button>
 </form>
 <div id="results">
     {{range .Artists}}
         <div class="artist">
             <h2>{{.Name}}</h2>
-            <p>{{.Genre}}</p>
         </div>
     {{end}}
 </div>
