@@ -61,3 +61,22 @@ li:hover {
     border-radius: 8px;
     margin-top: 20px;
 }
+
+.tour-dates {
+    list-style-type: none;
+    padding: 0;
+}
+.tour-dates > li {
+    margin-bottom: 10px;
+}
+.tour-dates .location {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.tour-dates .dates {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+.tour-dates .dates li {
+    margin-bottom: 5px;
+}

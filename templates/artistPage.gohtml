@@ -25,17 +25,17 @@
         <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
     </div>
 
-    <h2 class="section-title">Locations</h2>
-    <ul>
-        {{range .Locations.Locations}}
-            <li>{{. | formatLocation}}</li>
-        {{end}}
-    </ul>
-
-    <h2 class="section-title">Tour Dates</h2>
-    <ul>
-        {{range .Dates.Dates}}
-            <li>{{. | removeAsterisks | formatDate}}</li>
+    <h2 class="section-title">Tour Date and Locations</h2>
+    <ul class="tour-dates">
+        {{range $location, $dates := .Relations.DatesLocations}}
+            <li>
+                <div class="location">{{ $location | formatLocation }}</div>
+                <ul class="dates">
+                    {{range $dates}}
+                        <li>{{. | removeAsterisks | formatDate}}</li>
+                    {{end}}
+                </ul>
+            </li>
         {{end}}
     </ul>
 </div>

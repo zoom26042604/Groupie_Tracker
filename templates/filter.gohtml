@@ -10,12 +10,33 @@
             var display = document.getElementById(displayId);
             display.textContent = input.value;
         }
+
+        function searchArtists() {
+            var searchInput = document.getElementById("search");
+            var searchValue = searchInput.value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/search?query=" + encodeURIComponent(searchValue), true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var results = JSON.parse(xhr.responseText);
+                    var resultsDiv = document.getElementById("results");
+                    resultsDiv.innerHTML = "";
+                    results.forEach(function(artist) {
+                        var artistDiv = document.createElement("div");
+                        artistDiv.className = "artist";
+                        artistDiv.innerHTML = "<h2>" + artist.name + "</h2>";
+                        resultsDiv.appendChild(artistDiv);
+                    });
+                }
+            };
+            xhr.send();
+        }
     </script>
 </head>
 <body>
 <h1>Filter Page</h1>
 <form method="GET" action="/filter">
-    <input type="text" name="search" placeholder="Search for an artist ...">
+    <input type="text" id="search" name="search" placeholder="Search for an artist ..." oninput="searchArtists()">
     <div>
         <label>Creation Date:</label>
         <div class="slidecontainer">

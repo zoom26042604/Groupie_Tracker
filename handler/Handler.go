@@ -222,6 +222,8 @@ func (s *Server) StartServer() {
 
 	http.HandleFunc("/filter", s.FilterHandler)
 
+	http.HandleFunc("/search", s.SearchHandler)
+
 	port := ":8080"
 	fmt.Printf("Server starting on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, nil))
@@ -241,8 +243,19 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 	var filteredArtists []GetAPI.ArtistAPI
 
 	for _, artist := range s.Artists {
-		if search != "" && !strings.Contains(strings.ToLower(artist.Name), strings.ToLower(search)) {
-			continue
+		if search != "" {
+			searchLower := strings.ToLower(search)
+			nameMatch := strings.Contains(strings.ToLower(artist.Name), searchLower)
+			memberMatch := false
+			for _, member := range artist.Members {
+				if strings.Contains(strings.ToLower(member), searchLower) {
+					memberMatch = true
+					break
+				}
+			}
+			if !nameMatch && !memberMatch {
+				continue
+			}
 		}
 		if creationDate != "" && creationDate != "1987" {
 			year, err := strconv.Atoi(creationDate)
@@ -357,4 +370,25 @@ func formatLocation(location string) string {
 	countryOrContinent := strings.ToUpper(words[len(words)-1])
 
 	return fmt.Sprintf("%s, %s", city, countryOrContinent)
+}
+
+func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("query")
+	var results []GetAPI.ArtistAPI
+
+	for _, artist := range s.Artists {
+		if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
+			results = append(results, artist)
+			continue
+		}
+		for _, member := range artist.Members {
+			if strings.Contains(strings.ToLower(member), strings.ToLower(query)) {
+				results = append(results, artist)
+				break
+			}
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(results)
 }
