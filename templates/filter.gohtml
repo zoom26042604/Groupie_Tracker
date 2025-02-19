@@ -3,29 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Filter</title>
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/filter.css">
     <script>
-        function updateRangeValue(inputId, displayId) {
-            var input = document.getElementById(inputId);
-            var display = document.getElementById(displayId);
-            display.textContent = input.value;
+        function toggleFilters() {
+            var filterSection = document.getElementById("filter-section");
+            if (filterSection.style.display === "none" || filterSection.style.display === "") {
+                filterSection.style.display = "flex";
+            } else {
+                filterSection.style.display = "none";
+            }
         }
-
         function searchArtists() {
-            var searchInput = document.getElementById("search");
-            var searchValue = searchInput.value;
+            var searchQuery = document.getElementById("search").value;
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/search?query=" + encodeURIComponent(searchValue), true);
+            xhr.open("GET", "/search?query=" + encodeURIComponent(searchQuery), true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var results = JSON.parse(xhr.responseText);
-                    var resultsDiv = document.getElementById("results");
-                    resultsDiv.innerHTML = "";
+                    var resultsContainer = document.getElementById("results");
+                    resultsContainer.innerHTML = "";
                     results.forEach(function(artist) {
-                        var artistDiv = document.createElement("div");
-                        artistDiv.className = "artist";
-                        artistDiv.innerHTML = "<h2>" + artist.name + "</h2>";
-                        resultsDiv.appendChild(artistDiv);
+                        var li = document.createElement("li");
+                        var a = document.createElement("a");
+                        a.href = "/artist/" + artist.ID;
+                        var img = document.createElement("img");
+                        img.src = artist.Image;
+                        img.alt = "Artist cover";
+                        var div = document.createElement("div");
+                        div.className = "artist-info";
+                        var h3 = document.createElement("h3");
+                        h3.textContent = artist.Name;
+                        div.appendChild(h3);
+                        a.appendChild(img);
+                        a.appendChild(div);
+                        li.appendChild(a);
+                        resultsContainer.appendChild(li);
                     });
                 }
             };
@@ -34,52 +47,73 @@
     </script>
 </head>
 <body>
+<img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
+<img class="logo" src="/static/img/POSTIFY.png" alt="logo">
+
+<table>
+    <thead>
+    <tr>
+        <th><a href="http://localhost:8080">Acceuil</a></th>
+        <th><a href="http://localhost:8080/homePage">Artists</a></th>
+        <th><a href="http://localhost:8080/about">About</a></th>
+    </tr>
+    </thead>
+</table>
+
 <h1>Filter Page</h1>
 <form method="GET" action="/filter">
     <input type="text" id="search" name="search" placeholder="Search for an artist ..." oninput="searchArtists()">
-    <div>
-        <label>Creation Date:</label>
-        <div class="slidecontainer">
-            <input type="range" id="creation_date" name="creation_date" min="1950" max="2025" value="1987" class="slider" oninput="updateRangeValue('creation_date', 'creation_date_value')">
-            <span id="creation_date_value">1987</span>
-        </div>
-    </div>
-    <div>
-        <label>First Album Date:</label>
+    <button type="button" onclick="toggleFilters()">Filter</button>
+    <div id="filter-section" class="filter-section" style="display: none;">
         <div>
-            <input type="checkbox" name="first_album_date" value="1960-1970"> 1960-1970
-            <input type="checkbox" name="first_album_date" value="1970-1980"> 1970-1980
-            <input type="checkbox" name="first_album_date" value="1980 - 1990"> 1980 - 1990
-            <input type="checkbox" name="first_album_date" value="1990-2000"> 1990-2000
-            <input type="checkbox" name="first_album_date" value="2010-2020"> 2010-2020
+            <label>Creation Date:</label>
+            <div class="slidecontainer">
+                <input type="range" id="creation_date" name="creation_date" min="1950" max="2025" value="1987" class="slider" oninput="updateRangeValue('creation_date', 'creation_date_value')">
+                <span id="creation_date_value">1987</span>
+            </div>
         </div>
-    </div>
-    <div>
-        <label>Number of Members:</label>
         <div>
-            <input type="checkbox" name="members" value="1"> 1
-            <input type="checkbox" name="members" value="2"> 2
-            <input type="checkbox" name="members" value="3"> 3
-            <input type="checkbox" name="members" value="4"> 4
-            <input type="checkbox" name="members" value="5"> 5
-            <input type="checkbox" name="members" value="6"> 6
-            <input type="checkbox" name="members" value="7"> 7
+            <label>First Album Date:</label>
+            <div>
+                <input type="checkbox" name="first_album_date" value="1960-1970"> 1960-1970
+                <input type="checkbox" name="first_album_date" value="1970-1980"> 1970-1980
+                <input type="checkbox" name="first_album_date" value="1980 - 1990"> 1980 - 1990
+                <input type="checkbox" name="first_album_date" value="1990-2000"> 1990-2000
+                <input type="checkbox" name="first_album_date" value="2010-2020"> 2010-2020
+            </div>
         </div>
-    </div>
-    <div>
-        <label>Location of Concert</label>
         <div>
-            <input type="text" name="location" placeholder="Location of Concerts">
-            <button type="submit">Search</button>
+            <label>Number of Members:</label>
+            <div>
+                <input type="checkbox" name="members" value="1"> 1
+                <input type="checkbox" name="members" value="2"> 2
+                <input type="checkbox" name="members" value="3"> 3
+                <input type="checkbox" name="members" value="4"> 4
+                <input type="checkbox" name="members" value="5"> 5
+                <input type="checkbox" name="members" value="6"> 6
+                <input type="checkbox" name="members" value="7"> 7
+            </div>
+        </div>
+        <div>
+            <label>Location of Concert</label>
+            <div>
+                <input type="text" name="location" placeholder="Location of Concerts">
+                <button type="submit">Search</button>
+            </div>
         </div>
     </div>
 </form>
-<div id="results">
+<ul id="results">
     {{range .Artists}}
-        <div class="artist">
-            <h2>{{.Name}}</h2>
-        </div>
+        <li>
+            <a href="/artist/{{.ID}}">
+                <img src="{{.Image}}" alt="Artist cover">
+                <div class="artist-info">
+                    <h3>{{.Name}}</h3>
+                </div>
+            </a>
+        </li>
     {{end}}
-</div>
+</ul>
 </body>
 </html>

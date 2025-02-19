@@ -240,6 +240,21 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 	members := r.URL.Query()["members"]
 	location := r.URL.Query().Get("location")
 
+	// Check if any filter parameters are provided
+	if search == "" && creationDate == "" && len(firstAlbumDates) == 0 && len(members) == 0 && location == "" {
+		tmpl, err := template.ParseFiles("templates/filter.gohtml")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "text/html")
+		if err := tmpl.Execute(w, struct{ Artists []GetAPI.ArtistAPI }{Artists: nil}); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
 	var filteredArtists []GetAPI.ArtistAPI
 
 	for _, artist := range s.Artists {
