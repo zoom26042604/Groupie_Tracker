@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 mapboxgl.accessToken = 'pk.eyJ1IjoibGVyYXBob3UiLCJhIjoiY202a3R2MXNzMDFlYjJrcjV1NTh4N2l2ayJ9.x0B8KMcr28PJjV03zuK5Iw';
 const map = new mapboxgl.Map({
     container: 'map',
@@ -66,6 +59,7 @@ map.on('moveend', () => {
 
 spinGlobe();
 
+const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
 async function afficherLocations() {
     console.log(" afficherLocations() appelée !"); // Debug
     let index = 0;
@@ -98,11 +92,13 @@ async function afficherLocations() {
             const feature = response.body.features[0];
 
 
-            let popUpText = formattedLocation;
             new mapboxgl.Marker()
                 .setLngLat(feature.center)
-                .setPopup(new mapboxgl.Popup().setHTML(popUpText))
+                .setPopup(new mapboxgl.Popup().setHTML(
+                    `<div style="color: red; font-size: 16px;">${formattedLocation}</div>`
+                ))
                 .addTo(map);
+
 
             console.log(`Marqueur ajouté pour ${formattedLocation} à ${feature.center}`);
         } catch (error) {
