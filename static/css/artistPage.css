@@ -61,3 +61,13 @@ li:hover {
     border-radius: 8px;
     margin-top: 20px;
 }
+
+#map {
+    position: absolute;
+    right: 10px;
+    top: 100px;
+    bottom: 0;
+    width: 350px;
+    height: 350px;
+    border-radius: 25px;
+}
