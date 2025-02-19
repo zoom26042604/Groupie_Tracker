@@ -103,59 +103,73 @@ li:hover .artist-info {
     }
 }
 
-.circle-button {
-    position: fixed;
-    top: 20px;
+
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+    color: #57d53b;
+    border-collapse: separate;
+    border-spacing: 50px;
+    padding-top: 3rem;
+}
+
+.img{
+    width: 150px;
+}
+
+.text{
+    display: flex;
+    margin: 0 auto;
+    height: 40px;
+    width: 90px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logo{
+    display: block;
+    margin: 0 auto;
+    height: 60px;
+    width: 60px;
+    left: 5%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+
+.search{
+    --pading: 10px;
+
+    position: absolute;
     right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #57d53b;
-    border: none;
-    border-radius: 50%;
+    width: max-content;
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
+    padding: var(--pading);
+    border-radius: 28px;
+    background: #57d53b;
+    transition: box-shadow 0.25s;
+
 }
 
-.circle-button:hover {
-    background-color: #45a32a;
+.search:focus-within{
+    box-shadow: 0 0 2px rgba(0,0,0,0.75);
 }
 
-.circle-button svg {
-    width: 24px;
-    height: 24px;
-    fill: white;
-}
-
-.search-bar {
-    position: fixed;
-    top: 20px;
-    right: 80px;
-    width: 0;
-    height: 50px;
-    background-color: #57d53b;
-    border: none;
-    border-radius: 25px;
-    color: white;
-    font-size: 18px;
-    padding: 0 20px;
-    transition: width 0.3s ease-in-out;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.search-bar input {
-    background: transparent;
-    border: none;
-    color: white;
+.search-input{
+    font-size: 16px;
+    font-family: 'Lexend' , sans-serif;
+    color: #333333;
+    margin-left: var(--pading);
     outline: none;
-    width: 100%;
+    border: none;
+    background: transparent;
+    flex: 1;
 }
 
-.circle-button:focus + .search-bar,
-.search-bar:focus-within {
-    width: 200px;
+.search-input::placeholder,
+.search-icon{
+    color:rgba(0,0,0,0.5);
 }
-

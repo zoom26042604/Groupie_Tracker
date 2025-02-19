@@ -4,14 +4,29 @@
     <meta charset="UTF-8">
     <title>POSTIFY</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
 </head>
 <body>
-<h1>POSTIFY</h1>
-<button class="circle-button">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M10 2a8 8 0 105.293 14.707l4.707 4.707-1.414 1.414-4.707-4.707A8 8 0 1010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
-    </svg>
-</button>
+<img  class="text" src="/static/img/TEXT LOGO.PNG" alt="logo" >
+<img  class="logo" src="/static/img/POSTIFY.png" alt="logo" >
+
+<form>
+    <div class="search">
+       <span class="material-symbols-outlined"> search </span>
+        <input class="search-input" type="search" placeholder="search">
+    </div>
+</form>
+
+
+<table>
+    <thead>
+    <tr>
+        <th><a href="http://localhost:8080">Acceuil</a></th>
+        <th><a href="http://localhost:8080/homePage">Artists</a></th>
+        <th><a href="http://localhost:8080/about">About</a></th>
+    </tr>
+    </thead>
+</table>
 <ul>
     {{range .Artists}}
         <li>
