@@ -198,11 +198,11 @@ func (s *Server) StartServer() {
 			http.NotFound(w, r)
 			return
 		}
-
 		w.Header().Set("Content-Type", "text/html")
 		if err := artistTmpl.Execute(w, artistData); err != nil {
 			log.Printf("template execution error: %v", err)
 		}
+
 	})
 
 	http.HandleFunc("/about", func(w http.ResponseWriter, r *http.Request) {
