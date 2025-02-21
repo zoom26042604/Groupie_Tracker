@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Search</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/filter.css">
+    <link rel="stylesheet" href="/static/css/search.css">
 </head>
 <body>
 <img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
@@ -21,17 +21,119 @@
 </table>
 
 <h1>Search Artists</h1>
-<form method="GET" action="/search">
+<form method="GET" action="/search" id="search-form">
+    <input type="hidden" name="activeField" value="{{.ActiveField}}">
+
     <input type="text"
            id="search"
            name="query"
            placeholder="Search for an artist ..."
-           oninput="this.form.submit()"
+           oninput="document.querySelector('[name=activeField]').value='search'; this.form.submit()"
            value="{{.Query}}"
-            {{if .Query}}
-                onfocus="this.setSelectionRange(this.value.length, this.value.length)"
-            {{end}}
-           autofocus>
+           {{if eq .ActiveField "search"}}autofocus{{end}}
+            {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
+
+    <div class="filter-group">
+        <label>Creation Year Range:</label>
+        <div class="checkbox-group">
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1950-1959"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1950-1959"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1950-1959
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1960-1969"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1960-1969"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1960-1969
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1970-1979"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1970-1979"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1970-1979
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1980-1989"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1980-1989"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1980-1989
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1990-1999"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1990-1999"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1990-1999
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="2000-2009"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "2000-2009"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                2000-2009
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="2010-2019"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "2010-2019"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                2010-2019
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="2020-2029"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "2020-2029"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                2020-2029
+            </label>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <label>First Album Year Range:</label>
+        <div class="slider-container">
+            <input type="range"
+                   name="firstAlbumStart"
+                   min="1950"
+                   max="2024"
+                   value="{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}"
+                   class="range-slider"
+                   onchange="this.form.submit()">
+            <div class="slider-values">
+                <output>{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}</output>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-group">
+        <label for="members">Number of Members:</label>
+        <select name="members"
+                id="members"
+                class="filter-input"
+                onchange="this.form.submit()"
+                {{if eq .ActiveField "members"}}autofocus{{end}}>
+            <option value="">Any</option>
+            <option value="1" {{if eq .Filters.Members "1"}}selected{{end}}>1</option>
+            <option value="2" {{if eq .Filters.Members "2"}}selected{{end}}>2</option>
+            <option value="3" {{if eq .Filters.Members "3"}}selected{{end}}>3</option>
+            <option value="4" {{if eq .Filters.Members "4"}}selected{{end}}>4</option>
+            <option value="5" {{if eq .Filters.Members "5"}}selected{{end}}>5</option>
+            <option value="6" {{if eq .Filters.Members "6"}}selected{{end}}>6</option>
+            <option value="7" {{if eq .Filters.Members "7"}}selected{{end}}>7</option>
+            <option value="8" {{if eq .Filters.Members "8"}}selected{{end}}>8</option>
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <label for="location">Location:</label>
+        <input type="text"
+               name="location"
+               id="location"
+               value="{{.Filters.Location}}"
+               oninput="document.querySelector('[name=activeField]').value='location'; this.form.submit()"
+               {{if eq .ActiveField "location"}}autofocus{{end}}
+                {{if .Filters.Location}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
+    </div>
+
+    <a href="/search" class="clear-button">Clear All</a>
 </form>
 
 <ul id="results">

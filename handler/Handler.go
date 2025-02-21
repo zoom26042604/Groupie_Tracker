@@ -28,6 +28,23 @@ type Server struct {
 	ArtistsToShow int
 }
 
+type FilterParams struct {
+	CreationDate       string
+	FirstAlbum         string
+	Members            string
+	Location           string
+	CreationDateRanges []string
+	FirstAlbumStart    string
+	FirstAlbumEnd      string
+}
+
+type SearchData struct {
+	Artists     []GetAPI.ArtistAPI
+	Query       string
+	Filters     FilterParams
+	ActiveField string
+}
+
 func NewServer(artistsToShow int) *Server {
 	return &Server{
 		ArtistsToShow: artistsToShow,
@@ -271,24 +288,108 @@ func formatLocation(location string) string {
 
 func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("query")
+	activeField := r.URL.Query().Get("activeField")
+	filters := FilterParams{
+		CreationDateRanges: r.URL.Query()["creationDateRanges"],
+		FirstAlbumStart:    r.URL.Query().Get("firstAlbumStart"),
+		FirstAlbumEnd:      r.URL.Query().Get("firstAlbumEnd"),
+		Members:            r.URL.Query().Get("members"),
+		Location:           r.URL.Query().Get("location"),
+	}
+
 	var results []GetAPI.ArtistAPI
 
-	// If no query, show all artists
-	if query == "" {
-		results = s.Artists
-	} else {
-		// Search logic for when there is a query
-		for _, artist := range s.Artists {
-			if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
-				results = append(results, artist)
-				continue
-			}
+	for _, artist := range s.Artists {
+		matches := query == "" ||
+			strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query))
+
+		if !matches && query != "" {
 			for _, member := range artist.Members {
 				if strings.Contains(strings.ToLower(member), strings.ToLower(query)) {
-					results = append(results, artist)
+					matches = true
 					break
 				}
 			}
+		}
+
+		if filters.FirstAlbumStart != "" || filters.FirstAlbumEnd != "" {
+			firstAlbumYear := strings.Split(artist.FirstAlbum, "-")[2]
+			albumYear, _ := strconv.Atoi(firstAlbumYear)
+
+			if filters.FirstAlbumStart != "" {
+				startYear, _ := strconv.Atoi(filters.FirstAlbumStart)
+				if albumYear < startYear {
+					continue
+				}
+			}
+
+			if filters.FirstAlbumEnd != "" {
+				endYear, _ := strconv.Atoi(filters.FirstAlbumEnd)
+				if albumYear > endYear {
+					continue
+				}
+			}
+		}
+
+		if len(filters.CreationDateRanges) > 0 {
+			yearMatches := false
+			for _, yearRange := range filters.CreationDateRanges {
+				dates := strings.Split(yearRange, "-")
+				if len(dates) == 2 {
+					startYear, _ := strconv.Atoi(dates[0])
+					endYear, _ := strconv.Atoi(dates[1])
+					if artist.CreationDate >= startYear && artist.CreationDate <= endYear {
+						yearMatches = true
+						break
+					}
+				}
+			}
+			if !yearMatches {
+				continue
+			}
+		}
+
+		if matches {
+			if filters.CreationDate != "" {
+				creationYear, err := strconv.Atoi(filters.CreationDate)
+				if err != nil || artist.CreationDate != creationYear {
+					continue
+				}
+			}
+
+			if filters.Members != "" {
+				memberCount, err := strconv.Atoi(filters.Members)
+				if err != nil || len(artist.Members) != memberCount {
+					continue
+				}
+			}
+
+			if filters.FirstAlbum != "" {
+				firstAlbumYear := strings.Split(artist.FirstAlbum, "-")[2]
+				if firstAlbumYear != filters.FirstAlbum {
+					continue
+				}
+			}
+
+			if filters.Location != "" {
+				artistData, ok := s.ArtistDataMap[artist.ID]
+				if !ok {
+					continue
+				}
+				locationMatch := false
+				searchLoc := strings.ToLower(filters.Location)
+				for _, loc := range artistData.Locations.Locations {
+					if strings.Contains(strings.ToLower(loc), searchLoc) {
+						locationMatch = true
+						break
+					}
+				}
+				if !locationMatch {
+					continue
+				}
+			}
+
+			results = append(results, artist)
 		}
 	}
 
@@ -298,17 +399,15 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := struct {
-		Artists []GetAPI.ArtistAPI
-		Query   string
-	}{
-		Artists: results,
-		Query:   query,
+	data := SearchData{
+		Artists:     results,
+		Query:       query,
+		Filters:     filters,
+		ActiveField: activeField,
 	}
 
 	w.Header().Set("Content-Type", "text/html")
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
 	}
 }
