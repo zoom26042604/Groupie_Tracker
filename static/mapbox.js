@@ -95,7 +95,7 @@ async function afficherLocations() {
             new mapboxgl.Marker()
                 .setLngLat(feature.center)
                 .setPopup(new mapboxgl.Popup().setHTML(
-                    `<div style="color: red; font-size: 16px;">${formattedLocation}</div>`
+                    `<div style="color: blue; font-size: 16px;">${formattedLocation}</div>`
                 ))
                 .addTo(map);
 
