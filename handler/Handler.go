@@ -220,8 +220,6 @@ func (s *Server) StartServer() {
 		}
 	})
 
-	http.HandleFunc("/filter", s.FilterHandler)
-
 	http.HandleFunc("/search", s.SearchHandler)
 
 	port := ":8080"
@@ -231,137 +229,6 @@ func (s *Server) StartServer() {
 
 func removeAsterisks(s string) string {
 	return strings.Replace(s, "*", "", -1)
-}
-
-func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
-	// Set header once at the beginning
-	w.Header().Set("Content-Type", "text/html")
-
-	// Get filter parameters from URL query
-	search := r.URL.Query().Get("search")
-	creationDate := r.URL.Query().Get("creation_date")
-	firstAlbumDates := r.URL.Query()["first_album_date"]
-	members := r.URL.Query()["members"]
-	location := r.URL.Query().Get("location")
-
-	// Check if any filter parameters are provided
-	if search == "" && creationDate == "" && len(firstAlbumDates) == 0 && len(members) == 0 && location == "" {
-		tmpl, err := template.ParseFiles("templates/filter.gohtml")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		if err := tmpl.Execute(w, struct{ Artists []GetAPI.ArtistAPI }{Artists: nil}); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-		return
-	}
-
-	var filteredArtists []GetAPI.ArtistAPI
-
-	// Filter artists based on criteria
-	for _, artist := range s.Artists {
-		// Search filter (name and members)
-		if search != "" {
-			searchLower := strings.ToLower(search)
-			nameMatch := strings.Contains(strings.ToLower(artist.Name), searchLower)
-			memberMatch := false
-			for _, member := range artist.Members {
-				if strings.Contains(strings.ToLower(member), searchLower) {
-					memberMatch = true
-					break
-				}
-			}
-			if !nameMatch && !memberMatch {
-				continue
-			}
-		}
-
-		// Creation date filter
-		if creationDate != "" && creationDate != "1987" {
-			year, err := strconv.Atoi(creationDate)
-			if err != nil || artist.CreationDate != year {
-				continue
-			}
-		}
-
-		// First album date filter
-		if len(firstAlbumDates) > 0 {
-			parsedFirstAlbumDate, err := time.Parse("02-01-2006", artist.FirstAlbum)
-			if err != nil {
-				continue
-			}
-			dateMatched := false
-			for _, dateRange := range firstAlbumDates {
-				years := strings.Split(dateRange, "-")
-				if len(years) != 2 {
-					continue
-				}
-				startYear, err1 := strconv.Atoi(years[0])
-				endYear, err2 := strconv.Atoi(years[1])
-				if err1 != nil || err2 != nil {
-					continue
-				}
-				if parsedFirstAlbumDate.Year() >= startYear && parsedFirstAlbumDate.Year() <= endYear {
-					dateMatched = true
-					break
-				}
-			}
-			if !dateMatched {
-				continue
-			}
-		}
-
-		// Number of members filter
-		if len(members) > 0 {
-			memberCount := strconv.Itoa(len(artist.Members))
-			if !contains(members, memberCount) {
-				continue
-			}
-		}
-
-		// Location filter
-		if location != "" {
-			artistData, ok := s.ArtistDataMap[artist.ID]
-			if !ok {
-				continue
-			}
-			locationFound := false
-			for _, loc := range artistData.Locations.Locations {
-				if strings.Contains(strings.ToLower(loc), strings.ToLower(location)) {
-					locationFound = true
-					break
-				}
-			}
-			if !locationFound {
-				continue
-			}
-		}
-
-		// Add artist that passed all filters
-		filteredArtists = append(filteredArtists, artist)
-	}
-
-	// Render template with filtered results
-	tmpl, err := template.ParseFiles("templates/filter.gohtml")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if err := tmpl.Execute(w, struct{ Artists []GetAPI.ArtistAPI }{Artists: filteredArtists}); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-}
-
-func contains(slice []string, item string) bool {
-	for _, s := range slice {
-		if s == item {
-			return true
-		}
-	}
-	return false
 }
 
 func formatDate(date string) string {
@@ -406,20 +273,26 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("query")
 	var results []GetAPI.ArtistAPI
 
-	for _, artist := range s.Artists {
-		if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
-			results = append(results, artist)
-			continue
-		}
-		for _, member := range artist.Members {
-			if strings.Contains(strings.ToLower(member), strings.ToLower(query)) {
+	// If no query, show all artists
+	if query == "" {
+		results = s.Artists
+	} else {
+		// Search logic for when there is a query
+		for _, artist := range s.Artists {
+			if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
 				results = append(results, artist)
-				break
+				continue
+			}
+			for _, member := range artist.Members {
+				if strings.Contains(strings.ToLower(member), strings.ToLower(query)) {
+					results = append(results, artist)
+					break
+				}
 			}
 		}
 	}
 
-	tmpl, err := template.ParseFiles("templates/filter.gohtml")
+	tmpl, err := template.ParseFiles("templates/search.gohtml")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -436,5 +309,6 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }

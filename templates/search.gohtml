@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>POSTIFY</title>
+    <title>Search</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/filter.css">
 </head>
 <body>
-<img  class="text" src="/static/img/TEXT LOGO.PNG" alt="logo" >
-<img  class="logo" src="/static/img/POSTIFY.png" alt="logo" >
+<img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
+<img class="logo" src="/static/img/POSTIFY.png" alt="logo">
 
 <table>
     <thead>
@@ -15,11 +16,25 @@
         <th><a href="http://localhost:8080">Acceuil</a></th>
         <th><a href="http://localhost:8080/homePage">Artists</a></th>
         <th><a href="http://localhost:8080/about">About</a></th>
-        <th><a href="http://localhost:8080/search">Search</a></th>
     </tr>
     </thead>
 </table>
-<ul>
+
+<h1>Search Artists</h1>
+<form method="GET" action="/search">
+    <input type="text"
+           id="search"
+           name="query"
+           placeholder="Search for an artist ..."
+           oninput="this.form.submit()"
+           value="{{.Query}}"
+            {{if .Query}}
+                onfocus="this.setSelectionRange(this.value.length, this.value.length)"
+            {{end}}
+           autofocus>
+</form>
+
+<ul id="results">
     {{range .Artists}}
         <li>
             <a href="/artist/{{.ID}}">
