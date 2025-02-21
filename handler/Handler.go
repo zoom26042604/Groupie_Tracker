@@ -234,6 +234,10 @@ func removeAsterisks(s string) string {
 }
 
 func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
+	// Set header once at the beginning
+	w.Header().Set("Content-Type", "text/html")
+
+	// Get filter parameters from URL query
 	search := r.URL.Query().Get("search")
 	creationDate := r.URL.Query().Get("creation_date")
 	firstAlbumDates := r.URL.Query()["first_album_date"]
@@ -248,7 +252,6 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.Header().Set("Content-Type", "text/html")
 		if err := tmpl.Execute(w, struct{ Artists []GetAPI.ArtistAPI }{Artists: nil}); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -257,7 +260,9 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 
 	var filteredArtists []GetAPI.ArtistAPI
 
+	// Filter artists based on criteria
 	for _, artist := range s.Artists {
+		// Search filter (name and members)
 		if search != "" {
 			searchLower := strings.ToLower(search)
 			nameMatch := strings.Contains(strings.ToLower(artist.Name), searchLower)
@@ -272,12 +277,16 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 		}
+
+		// Creation date filter
 		if creationDate != "" && creationDate != "1987" {
 			year, err := strconv.Atoi(creationDate)
 			if err != nil || artist.CreationDate != year {
 				continue
 			}
 		}
+
+		// First album date filter
 		if len(firstAlbumDates) > 0 {
 			parsedFirstAlbumDate, err := time.Parse("02-01-2006", artist.FirstAlbum)
 			if err != nil {
@@ -303,12 +312,16 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 		}
+
+		// Number of members filter
 		if len(members) > 0 {
 			memberCount := strconv.Itoa(len(artist.Members))
 			if !contains(members, memberCount) {
 				continue
 			}
 		}
+
+		// Location filter
 		if location != "" {
 			artistData, ok := s.ArtistDataMap[artist.ID]
 			if !ok {
@@ -325,16 +338,18 @@ func (s *Server) FilterHandler(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 		}
+
+		// Add artist that passed all filters
 		filteredArtists = append(filteredArtists, artist)
 	}
 
+	// Render template with filtered results
 	tmpl, err := template.ParseFiles("templates/filter.gohtml")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/html")
 	if err := tmpl.Execute(w, struct{ Artists []GetAPI.ArtistAPI }{Artists: filteredArtists}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -404,6 +419,22 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(results)
+	tmpl, err := template.ParseFiles("templates/filter.gohtml")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	data := struct {
+		Artists []GetAPI.ArtistAPI
+		Query   string
+	}{
+		Artists: results,
+		Query:   query,
+	}
+
+	w.Header().Set("Content-Type", "text/html")
+	if err := tmpl.Execute(w, data); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
