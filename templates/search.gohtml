@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Search</title>
     <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/search.css">
 </head>
 <body>
 <img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
@@ -21,17 +20,24 @@
 </table>
 
 <h1>Search Artists</h1>
-<form method="GET" action="/search" id="search-form">
-    <input type="hidden" name="activeField" value="{{.ActiveField}}">
 
+<!-- Search Bar Form -->
+<form method="GET" action="/search" class="search-section">
+    <input type="hidden" name="activeField" value="search">
     <input type="text"
            id="search"
            name="query"
            placeholder="Search for an artist ..."
-           oninput="document.querySelector('[name=activeField]').value='search'; this.form.submit()"
+           oninput="this.form.submit()"
            value="{{.Query}}"
            {{if eq .ActiveField "search"}}autofocus{{end}}
             {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
+</form>
+
+<!-- Filters Form -->
+<form method="GET" action="/search" class="filters-section">
+    <input type="hidden" name="query" value="{{.Query}}">
+    <input type="hidden" name="activeField" value="filters">
 
     <div class="filter-group">
         <label>Creation Year Range:</label>
@@ -128,9 +134,15 @@
                name="location"
                id="location"
                value="{{.Filters.Location}}"
-               oninput="document.querySelector('[name=activeField]').value='location'; this.form.submit()"
+               oninput="this.form.querySelector('[name=activeField]').value = 'location'; this.form.submit()"
                {{if eq .ActiveField "location"}}autofocus{{end}}
-                {{if .Filters.Location}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
+                {{if .Filters.Location}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}
+               list="locations">
+        <datalist id="locations">
+            {{range .Locations}}
+            <option value="{{.}}">
+                {{end}}
+        </datalist>
     </div>
 
     <a href="/search" class="clear-button">Clear All</a>

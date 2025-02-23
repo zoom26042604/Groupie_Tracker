@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -43,6 +44,7 @@ type SearchData struct {
 	Query       string
 	Filters     FilterParams
 	ActiveField string
+	Locations   []string
 }
 
 func NewServer(artistsToShow int) *Server {
@@ -312,47 +314,30 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 
-		if filters.FirstAlbumStart != "" || filters.FirstAlbumEnd != "" {
-			firstAlbumYear := strings.Split(artist.FirstAlbum, "-")[2]
-			albumYear, _ := strconv.Atoi(firstAlbumYear)
-
-			if filters.FirstAlbumStart != "" {
-				startYear, _ := strconv.Atoi(filters.FirstAlbumStart)
-				if albumYear < startYear {
-					continue
-				}
-			}
-
-			if filters.FirstAlbumEnd != "" {
-				endYear, _ := strconv.Atoi(filters.FirstAlbumEnd)
-				if albumYear > endYear {
-					continue
-				}
-			}
-		}
-
-		if len(filters.CreationDateRanges) > 0 {
-			yearMatches := false
-			for _, yearRange := range filters.CreationDateRanges {
-				dates := strings.Split(yearRange, "-")
-				if len(dates) == 2 {
-					startYear, _ := strconv.Atoi(dates[0])
-					endYear, _ := strconv.Atoi(dates[1])
-					if artist.CreationDate >= startYear && artist.CreationDate <= endYear {
-						yearMatches = true
-						break
+		if matches {
+			if len(filters.CreationDateRanges) > 0 {
+				yearMatches := false
+				for _, yearRange := range filters.CreationDateRanges {
+					dates := strings.Split(yearRange, "-")
+					if len(dates) == 2 {
+						startYear, _ := strconv.Atoi(dates[0])
+						endYear, _ := strconv.Atoi(dates[1])
+						if artist.CreationDate >= startYear && artist.CreationDate <= endYear {
+							yearMatches = true
+							break
+						}
 					}
 				}
+				if !yearMatches {
+					continue
+				}
 			}
-			if !yearMatches {
-				continue
-			}
-		}
 
-		if matches {
-			if filters.CreationDate != "" {
-				creationYear, err := strconv.Atoi(filters.CreationDate)
-				if err != nil || artist.CreationDate != creationYear {
+			if filters.FirstAlbumStart != "" {
+				firstAlbumYear := strings.Split(artist.FirstAlbum, "-")[2]
+				albumYear, _ := strconv.Atoi(firstAlbumYear)
+				startYear, _ := strconv.Atoi(filters.FirstAlbumStart)
+				if albumYear < startYear {
 					continue
 				}
 			}
@@ -360,13 +345,6 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 			if filters.Members != "" {
 				memberCount, err := strconv.Atoi(filters.Members)
 				if err != nil || len(artist.Members) != memberCount {
-					continue
-				}
-			}
-
-			if filters.FirstAlbum != "" {
-				firstAlbumYear := strings.Split(artist.FirstAlbum, "-")[2]
-				if firstAlbumYear != filters.FirstAlbum {
 					continue
 				}
 			}
@@ -393,17 +371,33 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	tmpl, err := template.ParseFiles("templates/search.gohtml")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	locationSet := make(map[string]struct{})
+	for _, artist := range s.Artists {
+		if artistData, ok := s.ArtistDataMap[artist.ID]; ok {
+			for _, loc := range artistData.Locations.Locations {
+				locationSet[loc] = struct{}{}
+			}
+		}
 	}
+
+	locations := make([]string, 0, len(locationSet))
+	for loc := range locationSet {
+		locations = append(locations, loc)
+	}
+	sort.Strings(locations)
 
 	data := SearchData{
 		Artists:     results,
 		Query:       query,
 		Filters:     filters,
 		ActiveField: activeField,
+		Locations:   locations,
+	}
+
+	tmpl, err := template.ParseFiles("templates/search.gohtml")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "text/html")
