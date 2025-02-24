@@ -129,6 +129,13 @@ func (s *Server) StartServer() {
 		"removeAsterisks": removeAsterisks,
 		"formatDate":      formatDate,
 		"formatLocation":  formatLocation,
+		"iterate": func(start, end int) []int {
+			var result []int
+			for i := start; i <= end; i++ {
+				result = append(result, i)
+			}
+			return result
+		},
 	}
 
 	tmpl, err := template.New("index.gohtml").Funcs(funcMap).ParseFiles("templates/index.gohtml")
@@ -289,90 +296,93 @@ func formatLocation(location string) string {
 }
 
 func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query().Get("query")
+	query := strings.ToLower(r.URL.Query().Get("query"))
 	activeField := r.URL.Query().Get("activeField")
 	filters := FilterParams{
 		CreationDateRanges: r.URL.Query()["creationDateRanges"],
 		FirstAlbumStart:    r.URL.Query().Get("firstAlbumStart"),
 		FirstAlbumEnd:      r.URL.Query().Get("firstAlbumEnd"),
 		Members:            r.URL.Query().Get("members"),
-		Location:           r.URL.Query().Get("location"),
+		Location:           strings.ToLower(r.URL.Query().Get("location")),
 	}
 
-	var results []GetAPI.ArtistAPI
+	memberCount := 0
+	if filters.Members != "" {
+		memberCount, _ = strconv.Atoi(filters.Members)
+	}
 
-	for _, artist := range s.Artists {
-		matches := query == "" ||
-			strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query))
+	firstAlbumStart := 0
+	if filters.FirstAlbumStart != "" {
+		firstAlbumStart, _ = strconv.Atoi(filters.FirstAlbumStart)
+	}
 
-		if !matches && query != "" {
-			for _, member := range artist.Members {
-				if strings.Contains(strings.ToLower(member), strings.ToLower(query)) {
-					matches = true
-					break
+	yearRanges := make(map[int]bool)
+	if len(filters.CreationDateRanges) > 0 {
+		for _, yearRange := range filters.CreationDateRanges {
+			dates := strings.Split(yearRange, "-")
+			if len(dates) == 2 {
+				startYear, _ := strconv.Atoi(dates[0])
+				endYear, _ := strconv.Atoi(dates[1])
+				for year := startYear; year <= endYear; year++ {
+					yearRanges[year] = true
 				}
 			}
 		}
+	}
 
-		if matches {
-			if len(filters.CreationDateRanges) > 0 {
-				yearMatches := false
-				for _, yearRange := range filters.CreationDateRanges {
-					dates := strings.Split(yearRange, "-")
-					if len(dates) == 2 {
-						startYear, _ := strconv.Atoi(dates[0])
-						endYear, _ := strconv.Atoi(dates[1])
-						if artist.CreationDate >= startYear && artist.CreationDate <= endYear {
-							yearMatches = true
-							break
-						}
-					}
-				}
-				if !yearMatches {
-					continue
-				}
-			}
+	results := make([]GetAPI.ArtistAPI, 0, len(s.Artists))
+	locationSet := make(map[string]struct{}, 100)
 
-			if filters.FirstAlbumStart != "" {
-				firstAlbumYear := strings.Split(artist.FirstAlbum, "-")[2]
-				albumYear, _ := strconv.Atoi(firstAlbumYear)
-				startYear, _ := strconv.Atoi(filters.FirstAlbumStart)
-				if albumYear < startYear {
-					continue
-				}
-			}
-
-			if filters.Members != "" {
-				memberCount, err := strconv.Atoi(filters.Members)
-				if err != nil || len(artist.Members) != memberCount {
-					continue
-				}
-			}
-
-			if filters.Location != "" {
-				artistData, ok := s.ArtistDataMap[artist.ID]
-				if !ok {
-					continue
-				}
-				locationMatch := false
-				searchLoc := strings.ToLower(filters.Location)
-				for _, loc := range artistData.Locations.Locations {
-					if strings.Contains(strings.ToLower(loc), searchLoc) {
-						locationMatch = true
+	for _, artist := range s.Artists {
+		if query != "" {
+			matches := strings.Contains(strings.ToLower(artist.Name), query)
+			if !matches {
+				for _, member := range artist.Members {
+					if strings.Contains(strings.ToLower(member), query) {
+						matches = true
 						break
 					}
 				}
-				if !locationMatch {
-					continue
+			}
+			if !matches {
+				continue
+			}
+		}
+
+		if len(yearRanges) > 0 && !yearRanges[artist.CreationDate] {
+			continue
+		}
+
+		if firstAlbumStart > 0 {
+			albumYear, _ := strconv.Atoi(strings.Split(artist.FirstAlbum, "-")[2])
+			if albumYear < firstAlbumStart {
+				continue
+			}
+		}
+
+		if filters.Members != "" && len(artist.Members) != memberCount {
+			continue
+		}
+
+		if filters.Location != "" {
+			artistData, ok := s.ArtistDataMap[artist.ID]
+			if !ok {
+				continue
+			}
+			locationMatch := false
+			for _, loc := range artistData.Locations.Locations {
+				if strings.Contains(strings.ToLower(loc), filters.Location) {
+					locationMatch = true
+					break
 				}
 			}
-
-			results = append(results, artist)
+			if !locationMatch {
+				continue
+			}
 		}
-	}
 
-	locationSet := make(map[string]struct{})
-	for _, artist := range s.Artists {
+		results = append(results, artist)
+
 		if artistData, ok := s.ArtistDataMap[artist.ID]; ok {
 			for _, loc := range artistData.Locations.Locations {
 				locationSet[loc] = struct{}{}
@@ -388,13 +398,21 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 
 	data := SearchData{
 		Artists:     results,
-		Query:       query,
+		Query:       r.URL.Query().Get("query"),
 		Filters:     filters,
 		ActiveField: activeField,
 		Locations:   locations,
 	}
 
-	tmpl, err := template.ParseFiles("templates/search.gohtml")
+	tmpl, err := template.New("search.gohtml").Funcs(template.FuncMap{
+		"iterate": func(start, end int) []int {
+			result := make([]int, end-start+1)
+			for i := range result {
+				result[i] = start + i
+			}
+			return result
+		},
+	}).ParseFiles("templates/search.gohtml")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

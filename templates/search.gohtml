@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Search</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/searchPage.css">
 </head>
 <body>
 <img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
@@ -21,26 +22,28 @@
 
 <h1>Search Artists</h1>
 
-<!-- Search Bar Form -->
 <form method="GET" action="/search" class="search-section">
     <input type="hidden" name="activeField" value="search">
     <input type="text"
            id="search"
            name="query"
-           placeholder="Search for an artist ..."
+           placeholder="Search for an artist or a band..."
            oninput="this.form.submit()"
            value="{{.Query}}"
            {{if eq .ActiveField "search"}}autofocus{{end}}
             {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
 </form>
 
-<!-- Filters Form -->
+<button class="toggle-filters">Toggle Filters</button>
 <form method="GET" action="/search" class="filters-section">
     <input type="hidden" name="query" value="{{.Query}}">
     <input type="hidden" name="activeField" value="filters">
 
-    <div class="filter-group">
-        <label>Creation Year Range:</label>
+    <div class="filter-group creation-year">
+        <input type="checkbox"
+               id="yearToggle"
+               name="yearToggleState">
+        <label for="yearToggle">Creation Year Range</label>
         <div class="checkbox-group">
             <label>
                 <input type="checkbox" name="creationDateRanges" value="1950-1959"
@@ -93,56 +96,54 @@
         </div>
     </div>
 
-    <div class="filter-group">
-        <label>First Album Year Range:</label>
-        <div class="slider-container">
-            <input type="range"
-                   name="firstAlbumStart"
-                   min="1950"
-                   max="2024"
-                   value="{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}"
-                   class="range-slider"
-                   onchange="this.form.submit()">
-            <div class="slider-values">
-                <output>{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}</output>
+    <div class="filter-group year-range-group">
+        <div class="year-range-container">
+            <label>First Album Year Range:</label>
+            <div class="slider-container">
+                <input type="range"
+                       name="firstAlbumStart"
+                       min="1950"
+                       max="2024"
+                       value="{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}"
+                       class="range-slider"
+                       onchange="this.form.submit()">
+                <div class="slider-values">
+                    <output>{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}</output>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="filter-group">
-        <label for="members">Number of Members:</label>
-        <select name="members"
-                id="members"
-                class="filter-input"
-                onchange="this.form.submit()"
-                {{if eq .ActiveField "members"}}autofocus{{end}}>
-            <option value="">Any</option>
-            <option value="1" {{if eq .Filters.Members "1"}}selected{{end}}>1</option>
-            <option value="2" {{if eq .Filters.Members "2"}}selected{{end}}>2</option>
-            <option value="3" {{if eq .Filters.Members "3"}}selected{{end}}>3</option>
-            <option value="4" {{if eq .Filters.Members "4"}}selected{{end}}>4</option>
-            <option value="5" {{if eq .Filters.Members "5"}}selected{{end}}>5</option>
-            <option value="6" {{if eq .Filters.Members "6"}}selected{{end}}>6</option>
-            <option value="7" {{if eq .Filters.Members "7"}}selected{{end}}>7</option>
-            <option value="8" {{if eq .Filters.Members "8"}}selected{{end}}>8</option>
-        </select>
+    <div class="filter-group members-group">
+        <div class="members-container">
+            <label for="members">Number of Members:</label>
+            <select name="members" id="members" class="filter-input" onchange="this.form.submit()">
+                <option value="" {{if eq .Filters.Members ""}}selected{{end}}>Any</option>
+                {{range $i := iterate 1 8}}
+                    <option value="{{$i}}" {{if eq $.Filters.Members (printf "%d" $i)}}selected{{end}}>{{$i}}</option>
+                {{end}}
+            </select>
+        </div>
     </div>
 
-    <div class="filter-group">
-        <label for="location">Location:</label>
-        <input type="text"
-               name="location"
-               id="location"
-               value="{{.Filters.Location}}"
-               oninput="this.form.querySelector('[name=activeField]').value = 'location'; this.form.submit()"
-               {{if eq .ActiveField "location"}}autofocus{{end}}
-                {{if .Filters.Location}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}
-               list="locations">
-        <datalist id="locations">
-            {{range .Locations}}
-            <option value="{{.}}">
-                {{end}}
-        </datalist>
+    <div class="filter-group location-group">
+        <div class="location-container">
+            <label for="location">Location:</label>
+            <input type="text"
+                   name="location"
+                   id="location"
+                   class="filter-input"
+                   value="{{.Filters.Location}}"
+                   {{if eq .ActiveField "location"}}autofocus{{end}}
+                    {{if .Filters.Location}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}
+                   data-last-value="{{.Filters.Location}}"
+                   list="locations">
+            <datalist id="locations">
+                {{range .Locations}}
+                <option value="{{.}}">
+                    {{end}}
+            </datalist>
+        </div>
     </div>
 
     <a href="/search" class="clear-button">Clear All</a>
@@ -160,5 +161,53 @@
         </li>
     {{end}}
 </ul>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterSection = document.querySelector('.filters-section');
+        const toggleButton = document.querySelector('.toggle-filters');
+        const yearToggle = document.getElementById('yearToggle');
+        const checkboxGroup = yearToggle.nextElementSibling.nextElementSibling;
+
+        const isFilterVisible = localStorage.getItem('filterMenuVisible') === 'true';
+        if (isFilterVisible) {
+            filterSection.classList.add('show');
+        }
+
+        toggleButton.addEventListener('click', function() {
+            filterSection.classList.toggle('show');
+            localStorage.setItem('filterMenuVisible', filterSection.classList.contains('show'));
+        });
+
+        const isYearRangeVisible = localStorage.getItem('yearRangeVisible') === 'true';
+        yearToggle.checked = isYearRangeVisible;
+        checkboxGroup.style.display = isYearRangeVisible ? 'block' : 'none';
+
+        yearToggle.addEventListener('change', function() {
+            localStorage.setItem('yearRangeVisible', this.checked);
+            checkboxGroup.style.display = this.checked ? 'block' : 'none';
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const locationInput = document.getElementById('location');
+        const form = locationInput.closest('form');
+
+        locationInput.addEventListener('input', function(e) {
+            const activeField = form.querySelector('[name=activeField]');
+            activeField.value = 'location';
+
+            const currentValue = this.value;
+            this.dataset.lastValue = currentValue;
+
+            form.submit();
+        });
+
+        if (locationInput.hasAttribute('autofocus')) {
+            locationInput.focus();
+            if (locationInput.value) {
+                locationInput.setSelectionRange(locationInput.value.length, locationInput.value.length);
+            }
+        }
+    });
+</script>
 </body>
 </html>
