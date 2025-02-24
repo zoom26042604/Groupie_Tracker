@@ -5,7 +5,10 @@
     <title>{{.Artist.Name}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/artistPage.css">
+
+    <script src="/static/JS/slide.js"></script>
 </head>
+
 <body>
 <div class="container">
     <h1>{{.Artist.Name}}</h1>
@@ -26,11 +29,13 @@
     </div>
 
     <h2 class="section-title">Locations</h2>
-    <ul>
-        {{range .Locations.Locations}}
-            <li>{{. | formatLocation}}</li>
-        {{end}}
-    </ul>
+    <div class="slider-container slider-1">
+        <div class="slider-1" id="locationSlider">
+                {{range .Locations.Locations}}
+                   <div class="slide">{{. | formatLocation}}</div>
+                {{end}}
+        </div>
+    </div>
 
     <h2 class="section-title">Tour Dates</h2>
     <ul>
