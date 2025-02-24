@@ -27,11 +27,12 @@ h1 {
 
 .artist-image {
     display: block;
-    width: 250px;
-    height: 250px;
+    width: 400px;
+    height: 400px;
     object-fit: cover;
     margin: 0 auto 30px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-radius: 20px;
 }
 
 .section-title {
