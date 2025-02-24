@@ -28,7 +28,10 @@
         <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
     </div>
 
+
+
     <h2 class="section-title">Locations</h2>
+
     <div class="slider-container slider-1">
         <div class="slider" id="locationSlider">
                 {{range .Locations.Locations}}
@@ -37,12 +40,17 @@
         </div>
     </div>
 
+
+
     <h2 class="section-title">Tour Dates</h2>
-    <ul>
-        {{range .Dates.Dates}}
-            <li>{{. | removeAsterisks | formatDate}}</li>
-        {{end}}
-    </ul>
+
+    <div class="slider-container slider-2">
+        <div class="slider2" id="dateSlider">
+            {{range .Dates.Dates}}
+                <div class="slide2">{{. | removeAsterisks | formatDate}}</div>
+            {{end}}
+        </div>
+    </div>
 </div>
 
 <script>

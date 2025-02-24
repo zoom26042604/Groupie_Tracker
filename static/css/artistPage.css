@@ -77,7 +77,6 @@ li:hover {
     max-width: 600px;
     margin: 100px auto;
     overflow: hidden;
-    border: 1px solid #f1f1f1;
 }
 
 .slider-1 .slider {
@@ -87,11 +86,34 @@ li:hover {
 
 .slider-1 .slide {
     flex: 0 0 100%;
-    background: #000;
+    background: transparent;
     padding: 72px 0;
     text-align: center;
     font-size: 45px;
     color: #f1f1f1;
     min-width: 100%;
+
+}
+
+.slider-2 {
+    max-width: 600px;
+    margin: 100px auto;
+    overflow: hidden;
+}
+
+.slider-2 .slider2 {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider-2 .slide2 {
+    flex: 0 0 100%;
+    background: transparent;
+    padding: 72px 0;
+    text-align: center;
+    font-size: 45px;
+    color: #f1f1f1;
+    min-width: 100%;
+
 }
 
