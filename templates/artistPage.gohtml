@@ -17,14 +17,18 @@
 <div class="container">
     <h1>{{.Artist.Name}}</h1>
 
-    <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" class="artist-image">
 
-    <h2 class="section-title">Band Members</h2>
-    <ul>
-        {{range .Artist.Members}}
-            <li>{{.}}</li>
-        {{end}}
-    </ul>
+
+    <h2 class="section-title"></h2>
+    <div class="artist-jsp">
+        <ul class="artist-member">
+            {{range .Artist.Members}}
+                <li>{{.}}</li>
+            {{end}}
+        </ul>
+        <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" class="artist-image">
+    </div>
+
 
     <h2 class="section-title">Info</h2>
     <div class="info-section">
@@ -75,6 +79,8 @@
         </div>
 
     </div>
+
+</div>
 
 </div>
 

@@ -8,6 +8,8 @@ body {
 }
 
 .container {
+    text-align: center;
+    font-family: "Century Gothic";
     margin: 0 auto;
     background-color: #1E1E1E;
     border-radius: 8px;
@@ -16,6 +18,7 @@ body {
 }
 
 h1 {
+    font-family: "Century Gothic";
     color: #57d53b;
     font-size: 2.5em;
     margin-bottom: 20px;
@@ -32,6 +35,8 @@ h1 {
 }
 
 .section-title {
+    text-align: center;
+    font-family: "Century Gothic";
     color: #57d53b;
     border-bottom: 2px solid #57d53b;
     padding-bottom: 10px;
@@ -39,17 +44,36 @@ h1 {
 }
 
 ul {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     list-style-type: none;
     padding: 0;
 }
 
 li {
+
     background-color: #282828;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 4px;
     transition: background-color 0.3s ease;
 }
+
+ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background-color: transparent;
+    padding: 10px 15px;
+    margin: 5px;
+    font-weight: bold;
+
+}
+
 
 li:hover {
     background-color: #383838;
@@ -63,7 +87,6 @@ li:hover {
 }
 
 #map {
-    align-items: center;
     width: 350px;
     height: 350px;
     border-radius: 25px;
@@ -82,6 +105,7 @@ li:hover {
 }
 
 .slider-1 .slide {
+    font-family: "Century Gothic";
     flex: 0 0 100%;
     background: transparent;
     padding: 72px 0;
@@ -104,6 +128,7 @@ li:hover {
 }
 
 .slider-2 .slide2 {
+    font-family: "Century Gothic";
     flex: 0 0 100%;
     background: transparent;
     padding: 72px 0;
@@ -121,11 +146,11 @@ li:hover {
     pointer-events: none;
 }
 
-/* Style du bouton (label) */
+
 .toggle-map-btn {
     align-self: center;
     padding: 10px 15px;
-    background-color: #4a90e2;
+    background-color: forestgreen;
     color: white;
     border: none;
     border-radius: 4px;
@@ -138,21 +163,21 @@ li:hover {
     background-color: #3a80d2;
 }
 
-/* Section de la carte */
+
 .map-section {
     width: 100%;
-    height: 0;  /* Carte cachée par défaut */
+    height: 0;
     border: 0;
     overflow: hidden;
     transition: height 0.3s ease-out, border 0.3s ease-out;
 }
 
-/* Quand la checkbox est cochée, afficher la carte */
+
 .map-toggle-checkbox:checked ~ .map-section {
     height: 400px;
 }
 
-/* Changer le texte du bouton avec pseudo-éléments */
+
 .toggle-map-btn::after {
     content: "Afficher la carte";
 }
@@ -161,10 +186,34 @@ li:hover {
     content: "Masquer la carte";
 }
 
-/* Cacher le texte original du label */
+
 .toggle-map-btn {
     font-size: 0;
 }
 .toggle-map-btn::after {
+    font-family: "Century Gothic";
     font-size: 16px;
+}
+
+
+.artist-jsp {
+    display: flex;
+    align-items: center;
+    gap: 20px; /
+}
+
+.artist-members {
+    list-style-type: none; /* Supprime les puces */
+    padding: 0;
+    margin: 0;
+}
+
+.artist-members li {
+    background-color: #f0f0f0; /* Fond pour le cadre */
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    text-align: left; /* Alignement du texte à gauche */
+    width: fit-content; /* Ajuste la largeur au contenu */
 }
