@@ -24,8 +24,8 @@ type DatesAPI struct {
 }
 
 type RelationAPI struct {
-	ID             int      `json:"id"`
-	DatesLocations DatesAPI `json:"datesLocations"`
+	ID             int                 `json:"id"`
+	DatesLocations map[string][]string `json:"datesLocations"`
 }
 
 type CombinedData struct {

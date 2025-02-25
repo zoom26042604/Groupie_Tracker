@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/searchPage.css">
+</head>
+<body>
+<img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
+<img class="logo" src="/static/img/POSTIFY.png" alt="logo">
+
+<table>
+    <thead>
+    <tr>
+        <th><a href="/">Accueil</a></th>
+        <th><a href="/homePage">Artists</a></th>
+        <th><a href="/about">About</a></th>
+    </tr>
+    </thead>
+</table>
+
+<h1>Search Artists</h1>
+
+<div class="search-container">
+    <div class="search-input-wrapper">
+        <form method="GET" action="/search">
+            <input type="hidden" name="activeField" value="search">
+            <input type="text"
+                   id="search"
+                   name="query"
+                   placeholder="Search for an artist or a band..."
+                   oninput="this.form.submit()"
+                   value="{{.Query}}"
+                   list="searchSuggestions"
+                   class="search-input"
+                   {{if eq .ActiveField "search"}}autofocus{{end}}
+                    {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
+            <datalist id="searchSuggestions">
+                {{range .Artists}}
+                    {{$artistName := .Name}}
+                    <option value="{{.Name}} - Group"></option>
+                    {{if .Members}}
+                        {{range .Members}}
+                            <option value="{{. }} - Member">{{$artistName}}</option>
+                        {{end}}
+                    {{end}}
+                {{end}}
+            </datalist>
+        </form>
+    </div>
+    <button class="toggle-filters" aria-label="Toggle filters"></button>
+</div>
+
+<form method="GET" action="/search" class="filters-section">
+    <input type="hidden" name="query" value="{{.Query}}">
+    <input type="hidden" name="activeField" value="filters">
+
+    <div class="filter-group creation-year">
+        <input type="checkbox"
+               id="yearToggle"
+               name="yearToggleState">
+        <label for="yearToggle">Creation Year Range</label>
+        <div class="checkbox-group">
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1950-1959"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1950-1959"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1950-1959
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1960-1969"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1960-1969"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1960-1969
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1970-1979"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1970-1979"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1970-1979
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1980-1989"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1980-1989"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1980-1989
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="1990-1999"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "1990-1999"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                1990-1999
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="2000-2009"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "2000-2009"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                2000-2009
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="2010-2019"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "2010-2019"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                2010-2019
+            </label>
+            <label>
+                <input type="checkbox" name="creationDateRanges" value="2020-2029"
+                       {{range .Filters.CreationDateRanges}}{{if eq . "2020-2029"}}checked{{end}}{{end}}
+                       onchange="this.form.submit()">
+                2020-2029
+            </label>
+        </div>
+    </div>
+
+    <div class="filter-group year-range-group">
+        <div class="year-range-container">
+            <label>First Album Year Range:</label>
+            <div class="slider-container">
+                <input type="range"
+                       name="firstAlbumStart"
+                       min="1950"
+                       max="2024"
+                       value="{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}"
+                       class="range-slider"
+                       onchange="this.form.submit()">
+                <div class="slider-values">
+                    <output>{{if .Filters.FirstAlbumStart}}{{.Filters.FirstAlbumStart}}{{else}}1950{{end}}</output>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-group members-group">
+        <div class="members-container">
+            <label for="members">Number of Members:</label>
+            <select name="members" id="members" class="filter-input" onchange="this.form.submit()">
+                <option value="" {{if eq .Filters.Members ""}}selected{{end}}>Any</option>
+                {{range $i := iterate 1 8}}
+                    <option value="{{$i}}" {{if eq $.Filters.Members (printf "%d" $i)}}selected{{end}}>{{$i}}</option>
+                {{end}}
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-group location-group">
+        <div class="location-container">
+            <label for="location">Location:</label>
+            <input type="text"
+                   name="location"
+                   id="location"
+                   class="filter-input"
+                   value="{{.Filters.Location}}"
+                   {{if eq .ActiveField "location"}}autofocus{{end}}
+                    {{if .Filters.Location}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}
+                   data-last-value="{{.Filters.Location}}"
+                   list="locations">
+            <datalist id="locations">
+                {{range .Locations}}
+                <option value="{{.}}">
+                    {{end}}
+            </datalist>
+        </div>
+    </div>
+
+    <a href="/search" class="clear-button">Clear All</a>
+</form>
+
+<ul id="results">
+    {{range .Artists}}
+        <li>
+            <a href="/artist/{{.ID}}">
+                <img src="{{.Image}}" alt="Artist cover">
+                <div class="artist-info">
+                    <h3>{{.Name}}</h3>
+                </div>
+            </a>
+        </li>
+    {{end}}
+</ul>
+<script src="/static/js/filtervisibility.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search-input');
+        const dataList = document.getElementById('searchSuggestions');
+        const form = searchInput.form;
+
+        if (searchInput && dataList) {
+            searchInput.addEventListener('input', function(e) {
+                dataList.style.width = `${searchInput.offsetWidth}px`;
+            });
+
+            searchInput.addEventListener('change', function(e) {
+                const value = e.target.value;
+                if (value.includes(' - Member') || value.includes(' - Group')) {
+                    const name = value.split(' - ')[0];
+                    searchInput.value = name;
+                    form.submit();
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
