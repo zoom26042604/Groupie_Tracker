@@ -183,22 +183,17 @@
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.querySelector('.search-input');
         const dataList = document.getElementById('searchSuggestions');
-        const form = document.querySelector('.search-section');
+        const form = searchInput.form;
 
         if (searchInput && dataList) {
             searchInput.addEventListener('input', function(e) {
                 dataList.style.width = `${searchInput.offsetWidth}px`;
+            });
 
-                const options = Array.from(dataList.options);
-                const selectedOption = options.find(option => option.value === e.target.value);
-
-                if (selectedOption) {
-                    let name;
-                    if (e.target.value.includes(' - Member of ')) {
-                        name = e.target.value.split(' - Member of ')[0];
-                    } else {
-                        name = e.target.value.split(' - ')[0];
-                    }
+            searchInput.addEventListener('change', function(e) {
+                const value = e.target.value;
+                if (value.includes(' - Member') || value.includes(' - Group')) {
+                    const name = value.split(' - ')[0];
                     searchInput.value = name;
                     form.submit();
                 }
