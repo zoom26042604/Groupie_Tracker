@@ -13,28 +13,45 @@
 <table>
     <thead>
     <tr>
-        <th><a href="http://localhost:8080">Acceuil</a></th>
-        <th><a href="http://localhost:8080/homePage">Artists</a></th>
-        <th><a href="http://localhost:8080/about">About</a></th>
+        <th><a href="/">Accueil</a></th>
+        <th><a href="/homePage">Artists</a></th>
+        <th><a href="/about">About</a></th>
     </tr>
     </thead>
 </table>
 
 <h1>Search Artists</h1>
 
-<form method="GET" action="/search" class="search-section">
-    <input type="hidden" name="activeField" value="search">
-    <input type="text"
-           id="search"
-           name="query"
-           placeholder="Search for an artist or a band..."
-           oninput="this.form.submit()"
-           value="{{.Query}}"
-           {{if eq .ActiveField "search"}}autofocus{{end}}
-            {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
-</form>
+<div class="search-container">
+    <div class="search-input-wrapper">
+        <form method="GET" action="/search">
+            <input type="hidden" name="activeField" value="search">
+            <input type="text"
+                   id="search"
+                   name="query"
+                   placeholder="Search for an artist or a band..."
+                   oninput="this.form.submit()"
+                   value="{{.Query}}"
+                   list="searchSuggestions"
+                   class="search-input"
+                   {{if eq .ActiveField "search"}}autofocus{{end}}
+                    {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
+            <datalist id="searchSuggestions">
+                {{range .Artists}}
+                    {{$artistName := .Name}}
+                    <option value="{{.Name}} - Group"></option>
+                    {{if .Members}}
+                        {{range .Members}}
+                            <option value="{{. }} - Member">{{$artistName}}</option>
+                        {{end}}
+                    {{end}}
+                {{end}}
+            </datalist>
+        </form>
+    </div>
+    <button class="toggle-filters" aria-label="Toggle filters"></button>
+</div>
 
-<button class="toggle-filters">Toggle Filters</button>
 <form method="GET" action="/search" class="filters-section">
     <input type="hidden" name="query" value="{{.Query}}">
     <input type="hidden" name="activeField" value="filters">
@@ -161,51 +178,31 @@
         </li>
     {{end}}
 </ul>
+<script src="/static/js/filtervisibility.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const filterSection = document.querySelector('.filters-section');
-        const toggleButton = document.querySelector('.toggle-filters');
-        const yearToggle = document.getElementById('yearToggle');
-        const checkboxGroup = yearToggle.nextElementSibling.nextElementSibling;
+        const searchInput = document.querySelector('.search-input');
+        const dataList = document.getElementById('searchSuggestions');
+        const form = document.querySelector('.search-section');
 
-        const isFilterVisible = localStorage.getItem('filterMenuVisible') === 'true';
-        if (isFilterVisible) {
-            filterSection.classList.add('show');
-        }
+        if (searchInput && dataList) {
+            searchInput.addEventListener('input', function(e) {
+                dataList.style.width = `${searchInput.offsetWidth}px`;
 
-        toggleButton.addEventListener('click', function() {
-            filterSection.classList.toggle('show');
-            localStorage.setItem('filterMenuVisible', filterSection.classList.contains('show'));
-        });
+                const options = Array.from(dataList.options);
+                const selectedOption = options.find(option => option.value === e.target.value);
 
-        const isYearRangeVisible = localStorage.getItem('yearRangeVisible') === 'true';
-        yearToggle.checked = isYearRangeVisible;
-        checkboxGroup.style.display = isYearRangeVisible ? 'block' : 'none';
-
-        yearToggle.addEventListener('change', function() {
-            localStorage.setItem('yearRangeVisible', this.checked);
-            checkboxGroup.style.display = this.checked ? 'block' : 'none';
-        });
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        const locationInput = document.getElementById('location');
-        const form = locationInput.closest('form');
-
-        locationInput.addEventListener('input', function(e) {
-            const activeField = form.querySelector('[name=activeField]');
-            activeField.value = 'location';
-
-            const currentValue = this.value;
-            this.dataset.lastValue = currentValue;
-
-            form.submit();
-        });
-
-        if (locationInput.hasAttribute('autofocus')) {
-            locationInput.focus();
-            if (locationInput.value) {
-                locationInput.setSelectionRange(locationInput.value.length, locationInput.value.length);
-            }
+                if (selectedOption) {
+                    let name;
+                    if (e.target.value.includes(' - Member of ')) {
+                        name = e.target.value.split(' - Member of ')[0];
+                    } else {
+                        name = e.target.value.split(' - ')[0];
+                    }
+                    searchInput.value = name;
+                    form.submit();
+                }
+            });
         }
     });
 </script>
