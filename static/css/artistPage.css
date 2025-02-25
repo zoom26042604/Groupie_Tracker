@@ -27,8 +27,8 @@ h1 {
 
 .artist-image {
     display: block;
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
     object-fit: cover;
     margin: 0 auto 30px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.3);
@@ -161,7 +161,7 @@ li:hover {
 }
 
 .toggle-map-btn:hover {
-    background-color: green;
+    background-color: #3a80d2;
 }
 
 
@@ -218,5 +218,3 @@ li:hover {
     text-align: left; /* Alignement du texte à gauche */
     width: fit-content; /* Ajuste la largeur au contenu */
 }
-
-
