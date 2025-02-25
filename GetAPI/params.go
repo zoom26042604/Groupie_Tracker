@@ -10,6 +10,12 @@ type ArtistAPI struct {
 	Locations    string   `json:"locations"`
 	ConcertDates string   `json:"concertDates"`
 	Relations    string   `json:"relations"`
+	Spotify      string   `json:"spotifyUrl"`
+}
+
+type SpotifyAPI struct {
+	id      int    `json:"id"`
+	spotify string `json:"spotifyUrl"`
 }
 
 type LocationsAPI struct {
