@@ -1,111 +1,220 @@
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #121212;
-    color: white;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    padding: 2rem;
-    min-height: 100vh;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
     line-height: 1.6;
-    max-width: 1200px;
+}
+
+.container {
+    text-align: center;
+    font-family: "Century Gothic";
     margin: 0 auto;
-
+    background-color: #1E1E1E;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-h1{
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
+h1 {
+    font-family: "Century Gothic";
     color: #57d53b;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border-bottom: 2px solid #57d53b;
-    padding-bottom: 0.5rem;
-
-}
-
-ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-    list-style: none;
-    padding: 1px;
-    background: #333333;
-    border-radius: 20px;
-}
-
-li {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #333;
+    font-size: 2.5em;
+    margin-bottom: 20px;
     text-align: center;
-    font-size: 1.1rem;
-    position: relative;
-    transition: transform 0.2s ease-in-out;
-    aspect-ratio: 1;
-}
-
-li:hover {
-    transform: scale(1.05);
-    background: #2a2a2a2a;
-}
-
-li:last-child{
-    border-bottom: none;
 }
 
 .artist-image {
     display: block;
-    height: 100%;
-    text-decoration: none;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    border-radius: 4px;
-}
-
-img {
-    position: absolute;
-    right: 75%;
-    display: block;
-    margin: 2rem auto;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
-    width: 90%;
-    height: 90%;
+    width: 400px;
+    height: 400px;
     object-fit: cover;
-    transition: filter 0.2s ease-in-out;
-    border-radius: 10px;
-}
-
-img:hover{
-    transform: scale(1.02);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.8);
+    margin: 0 auto 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-radius: 20px;
 }
 
 .section-title {
+    text-align: center;
+    font-family: "Century Gothic";
     color: #57d53b;
     border-bottom: 2px solid #57d53b;
     padding-bottom: 10px;
     margin-top: 30px;
 }
 
-strong{
-    color: #ffffff;
-    font-weight: 600;
+ul {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    list-style-type: none;
+    padding: 0;
 }
 
-p{
-    text-align: center;
-    font-size: 1.5rem;
-    margin: 2rem 0 1rem;
-    color: #e0e0e0;
+li {
+
+    background-color: #282828;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
+ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background-color: transparent;
+    padding: 10px 15px;
+    margin: 5px;
+    font-weight: bold;
+
+}
+
+
+li:hover {
+    background-color: #383838;
+}
+
+.info-section {
+    background-color: #282828;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
 
 #map {
-    position: absolute;
-    right: 10px;
-    top: 100px;
-    bottom: 0;
     width: 350px;
     height: 350px;
     border-radius: 25px;
+}
+
+
+.slider-1 {
+    max-width: 600px;
+    margin: 100px auto;
+    overflow: hidden;
+}
+
+.slider-1 .slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider-1 .slide {
+    font-family: "Century Gothic";
+    flex: 0 0 100%;
+    background: transparent;
+    padding: 72px 0;
+    text-align: center;
+    font-size: 45px;
+    color: #f1f1f1;
+    min-width: 100%;
+
+}
+
+.slider-2 {
+    max-width: 600px;
+    margin: 100px auto;
+    overflow: hidden;
+}
+
+.slider-2 .slider2 {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider-2 .slide2 {
+    font-family: "Century Gothic";
+    flex: 0 0 100%;
+    background: transparent;
+    padding: 72px 0;
+    text-align: center;
+    font-size: 45px;
+    color: #f1f1f1;
+    min-width: 100%;
+
+}
+
+
+.map-toggle-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+.toggle-map-btn {
+    align-self: center;
+    padding: 10px 15px;
+    background-color: forestgreen;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px 0;
+    display: inline-block;
+}
+
+.toggle-map-btn:hover {
+    background-color: #3a80d2;
+}
+
+
+.map-section {
+    width: 100%;
+    height: 0;
+    border: 0;
+    overflow: hidden;
+    transition: height 0.3s ease-out, border 0.3s ease-out;
+}
+
+
+.map-toggle-checkbox:checked ~ .map-section {
+    height: 400px;
+}
+
+
+.toggle-map-btn::after {
+    content: "Afficher la carte";
+}
+
+.map-toggle-checkbox:checked ~ .toggle-map-btn::after {
+    content: "Masquer la carte";
+}
+
+
+.toggle-map-btn {
+    font-size: 0;
+}
+.toggle-map-btn::after {
+    font-family: "Century Gothic";
+    font-size: 16px;
+}
+
+
+.artist-jsp {
+    display: flex;
+    align-items: center;
+    gap: 20px; /
+}
+
+.artist-members {
+    list-style-type: none; /* Supprime les puces */
+    padding: 0;
+    margin: 0;
+}
+
+.artist-members li {
+    background-color: #f0f0f0; /* Fond pour le cadre */
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    text-align: left; /* Alignement du texte à gauche */
+    width: fit-content; /* Ajuste la largeur au contenu */
 }

@@ -1,0 +1,272 @@
+[
+  {
+    "id": "1",
+    "spotifyUrl": "1dfeR4HaWDbWqFHLkxsg1d",
+    "about": " Queen epitomize all the glittery excess of album-oriented rock in the 1970s, marrying the crunch of heavy metal to the pomp of prog rock then leavening the heady mixture with camp humor. "
+  },
+  {
+    "id": "2",
+    "spotifyUrl": "2vaWvC8suCFkRXejDOK7EE",
+    "about": " For more than two decades, SOJA have elated audiences across the globe with their fresh yet timeless take on roots reggae, a sound born from their shared passion for making music that transports and inspires. "
+  },
+  {
+    "id": "3",
+    "spotifyUrl": "0k17h0D3J5VfsdmQ1iZtE9",
+    "about": " Pink Floyd are one of the most successful and influential rock groups in history.
+
+               The members of the group to become known as Pink Floyd came together in London, but the band’s roots were in Cambridge, in the East of England, in the early 1960s. "
+  },
+  {
+    "id": "4",
+    "spotifyUrl": "27T030eWyCQRmDyuvr1kxY",
+    "about": " Known best for their 1984 anthem "Rock You Like a Hurricane" & the 1990 ballad "Wind of Change," German rockers Scorpions have sold over 100 million records, making them one of the most successful rock bands to ever come out of Europe "
+  },
+  {
+    "id": "5",
+    "spotifyUrl": "15UsOTVnJzReFVN1VCnxy4",
+    "about": "Controversial rapper Jahseh Dwayne Onfroy (aka XXXTentacion) played fast and loose when it came to genres, often incorporating elements of punk rock, hip-hop, R&B, and heavy metal. In the late 2010s, he experienced a quick rise with his dark and emotionally intense content, scoring a number one album with 2018's ?. Months later, at the peak of his popularity, he was shot and killed."
+  },
+  {
+    "id": "6",
+    "spotifyUrl": "4LLpKhyESsyAXpc4laK94U",
+    "about": "For a tragically brief time, Pittsburgh-based rapper and producer Mac Miller connected with legions of listeners through the appeal of both his curious, jazz-flecked instrumental style and heartfelt lyrics that laid bare his struggles with depression and addiction"
+  },
+  {
+    "id": "7",
+    "spotifyUrl": "6C1ohJrd5VydigQtaGy5Wa",
+    "about": "Joyner Lucas is a two-time, Grammy-nominated hip-hop artist, entertainer, actor and entrepreneur. Over the course of his distinguished career, he has released several platinum and gold projects and singles, such as “ISIS,” “I’m Not Racist,” “Ramen & OJ,” “ADHD,” and “Your Heart,” among others."
+  },
+  {
+    "id": "8",
+    "spotifyUrl": "2YZyLoL8N0Wb9xBt1NhZWg",
+    "about": " One of the most acclaimed artists of his generation, hip-hop or otherwise, Kendrick Lamar is known for his top-tier lyricism, virtuosic microphone command, and sharp conceptual vision. His talents have translated to a rare combination of continuous chart feats and critical acclaim, plus respect and support from the rappers who paved the way for his advancement. "
+  },
+  {
+    "id": "9",
+    "spotifyUrl": "711MCceyCBcFnzjGY4Q7Un",
+   "about": " With a limitless supply of dirty riffs, snarling vocals, and timelessly catchy, anthemic choruses, AC/DC is one of the most important and most lasting forces in hard rock"
+  },
+  {
+    "id": "10",
+    "spotifyUrl": "1w5Kfo2jwwIPruYS2UWh56",
+    "about": "Though they made their initial mark as frontrunners of the grunge movement of the early '90s, Pearl Jam began -- and have remained -- more emotionally curious and stylistically adventurous than many of their flannel-clad peers of that era, expanding past the angst and dissonance often associated with grunge to become one of the most popular and enduring rock & roll bands of their time. "
+  },
+  {
+    "id": "11",
+    "spotifyUrl": "6jJ0s89eD6GaHleKKya26X",
+    "about": "Since Katy Perry’s Capitol Records debut in 2008 with One of the Boys, she has racked up a cumulative 115 billion streams alongside worldwide sales of over 70 million adjusted albums and 143 million tracks."
+  },
+  {
+    "id": "12",
+    "spotifyUrl": "5pKCCKE2ajJHZ9KAiaK11H",
+    "about": "Among the most popular and acclaimed artists in postmillennial contemporary music, Rihanna is also uncommonly dynamic, having mixed and matched pure pop, dancehall, R&B, EDM, and adult contemporary material throughout her career."
+  },
+  {
+    "id": "13",
+    "spotifyUrl": "3CkvROUTQ6nRi9yQOcsB50",
+    "about": "Genesis was one of the enduring institutions of the rock era, a phrase that doesn't hint at how the band's membership and music were remarkably fluid, encompassing at least three distinct phases, if not more."
+  },
+  {
+    "id": "14",
+    "spotifyUrl": "4lxfqrEsLX6N1N4OCSkILp",
+    "about": "One of music’s most iconic and celebrated figures, legendary British singer, songwriter, drummer, and producer Phil Collins has made an indelible mark on pop culture during his five-decade-long career, both as a member of Genesis and as a chart-topping solo artist"
+  },
+  {
+    "id": "15",
+    "spotifyUrl": "36QJpDe2go2KgaRleHCDTp",
+    "about": "For more than fifty years, Led Zeppelin have continued to inspire generations with their groundbreaking blues-infused, guitar-driven rock ’n’ roll. The biggest rock band in the world throughout their 12-year reign, they remain one of the most influential and innovative groups in music history."
+  },
+  {
+    "id": "16",
+    "spotifyUrl": "776Uo845nYHJpNaStv1Ds4",
+    "about": "In his brief four-year reign as a superstar, Jimi Hendrix expanded the vocabulary of the electric rock guitar more than anyone before or since."
+  },
+  {
+    "id": "17",
+    "spotifyUrl": "1LZEQNv7sE11VDY3SdxQeN",
+    "about": "Relying on their top-notch songwriting and impeccable vocals, the Bee Gees were able to craft a long-running career that began in the late '50s in Australia."
+  },
+  {
+    "id": "18",
+    "spotifyUrl": "568ZhdwyaiCyOGJRtNYhWf",
+    "about": "How do you sum up 50 years of Rock music history in a Spotify bio?
+
+              🕳️💜
+
+              are:
+
+              🚬 🌊 🛣️⭐ 🔥 🙈😭 👶🕒 💨
+
+              and so much more..."
+  },
+  {
+    "id": "19",
+    "spotifyUrl": "7Ey4PD4MYsKc5I2dolUwbH",
+    "about": "Specializing in raunchy, sleazy boogie and melodramatic ballads, Aerosmith were one of the biggest hard rock bands to emerge in the 1970s, shaping the sound and style of hard rock and metal in the decades to come."
+  },
+  {
+    "id": "20",
+    "spotifyUrl": "0WwSkZ7LtFUFjGjMZBMt6T",
+    "about": "Dire Straits emerged during the post-punk era of the late '70s, and while their sound was minimalistic and stripped down, they owed little to punk. If anything, the band was a direct outgrowth of the roots revivalism of pub rock, but where pub rock celebrated good times, Dire Straits were melancholy. Led by guitarist/vocalist , the group built their sound upon the laid-back blues-rock of , but they also had jazz and country inflections, occasionally dipping into the epic song structures of progressive rock. "
+  },
+  {
+    "id": "21",
+    "spotifyUrl": "5Q9RKJrjHdfpWVxzv45XTJ",
+    "about": "A banda mais legal e irreverente que já existiu"
+  },
+  {
+    "id": "22",
+    "spotifyUrl": "0RqtSIYZmd4fiBKVFqyIqD",
+    "about": "Provhito In Altum"
+  },
+  {
+    "id": "23",
+    "spotifyUrl": "53XhwfbYqKCa1cC15pYq2q",
+    "about": "Formed in 2009, Imagine Dragons first revealed their emotionally charged and inventive sensibilities with a series of independently released EPs that earned them grassroots following."
+  },
+  {
+    "id": "24",
+    "spotifyUrl": "4MCBfE4596Uoi2O4DtmEMz",
+    "about": "Juice WRLD became a Top Ten hitmaker delivering introspective lyrics atop melodic production, with echoes of Travis Scott and Post Malone. His heartsick 2018 debut Goodbye & Good Riddance (2018), home to his biggest hit "Lucid Dreams," reflected a wide range of stylistic influences: R&B instrumentation, dreamy beats, and even indie rock melodicism."
+  },
+  {
+    "id": "25",
+    "spotifyUrl": "4xRYI6VqpkE3UwrDrAZL8L",
+    "about": "The stylistically dynamic and voluble Logic launched his rap career through uploads and mixtapes and has gone on to become a mainstream fixture."
+  },
+  {
+    "id": "26",
+    "spotifyUrl": "5IH6FPUwQTxPSXurCrcIov",
+    "about": "Alec Benjamin has cemented himself as one of the most compelling storytellers of his generation, crafting songs that are as quirky as they are profound."
+  },
+  {
+    "id": "27",
+    "spotifyUrl": "2FjkZT851ez950cyPjeYid",
+    "about": "Vocal virtuoso Bobby McFerrin is a musical icon whose innovative wide-octave-jumping approach to a cappella and vocalese has earned him critical and commercial acclaim across the pop, jazz, and classical worlds."
+  },
+  {
+    "id": "28",
+    "spotifyUrl": "6cEuCEZu7PAE9ZSzLLc2oQ",
+    "about": "Multi-Platinum DJ and producer Fadil El Ghoul, better known as  has been trailblazing his way through dance music for the past fifteen years. "
+  },
+  {
+    "id": "29",
+    "spotifyUrl": "246dkjvS1zLTtiykXe5h60",
+    "about": "Diamond-certified American hitmaker Post Malone bridges the gap between the worlds of rap and the pop mainstream. "
+  },
+  {
+    "id": "30",
+    "spotifyUrl": "0Y5tJX1MQlPlqiwlOH1tJY",
+    "about": "Houston-born rapper and producer Travis Scott's psychedelic trap style makes him one of the more distinctive talents to have risen to the height of mainstream commercial popularity. "
+  },
+  {
+    "id": "31",
+    "spotifyUrl": "6l3HvQ5sa6mXTsMTB19rO5",
+    "about": "Jermaine Lamarr Cole. Musician."
+  },
+  {
+    "id": "32",
+    "spotifyUrl": "6deZN1bslXzeGvOLaLMOIF",
+    "about": "Nickelback makes loud, emotional rock with just enough pop sheen to carry them consistently to mainstream success."
+  },
+  {
+    "id": "33",
+    "spotifyUrl": "6O2zJ0tId7g07yzHtX0yap",
+    "about": "Mobb Deep stood tall as East Coast hardcore rap figureheads on the basis of their epochal album The Infamous"
+  },
+  {
+    "id": "34",
+    "spotifyUrl": "3qm84nBOXUEQ2vnTfUTTFC",
+    "about": "Guns N' Roses are the bridge separating 1980s and 1990s hard rock, the band responsible for ushering in an era of grim, gritty rock & roll."
+  },
+  {
+    "id": "35",
+    "spotifyUrl": "4EnEZVjo3w1cwcQYePccay",
+    "about": "N.W.A, the unapologetically violent and sexist pioneers of gangsta rap, are in many ways the most notorious group in the history of rap."
+  },
+  {
+    "id": "36",
+    "spotifyUrl": "51Blml2LZPmy7TTiAg47vQ",
+    "about": "U2 catapulted over its post-punk peers to become the biggest rock & roll band in the world, a title they earned after the release of The Joshua Tree in 1987 and maintained well into the 21st century."
+  },
+  {
+    "id": "37",
+    "spotifyUrl": "7Ln80lUS6He07XvHI8qqHH",
+    "about": "With their nervy and literate indie rock sound, Arctic Monkeys are a respected, adventurous, and successful group that could easily be called Britain's biggest band of the early 21st century. "
+  },
+  {
+    "id": "38",
+    "spotifyUrl": "4UXqAaa6dQYAk18Lv7PEgX",
+    "about": "720S bumpin' Fall Out Boy"
+  },
+  {
+    "id": "39",
+    "spotifyUrl": "3AA28KZvwAUcZuOKwyblJQ",
+    "about": "Created by musician Damon Albarn and artist Jamie Hewlett, Gorillaz is singer 2D, bassist Murdoc Niccals, drummer Russel Hobbs and guitarist Noodle."
+  },
+  {
+    "id": "40",
+    "spotifyUrl": "0ECwFtbIWEVNwjlrfc6xoL",
+    "about": "The Eagles are unquestionably the biggest mainstream American rock band to have emerged in the 1970s"
+  },
+  {
+    "id": "41",
+    "spotifyUrl": "6XyY86QOPPrYVGvF9ch6wz",
+    "about": "LINKIN PARK emerged as an innovative musical force and are one of the best-selling artists of the last twenty years"
+  },
+  {
+    "id": "42",
+    "spotifyUrl": "0L8ExT028jH3ddEcZwqJJ5",
+    "about": "We went in search of ourselves as the band that we have somehow always been. Just for the fun of it we jammed and learned some old songs."
+  },
+  {
+    "id": "43",
+    "spotifyUrl": "7dGJo4pcD2V6oG8kP0tJRR",
+    "about": "Apart from being one of the best-selling artists in music history, Eminem is one of the greatest rappers of his generation. He's effortlessly fast, fluid, dexterous, and unpredictable, capable of pulling off long-form narratives or withering asides."
+  },
+  {
+    "id": "44",
+    "spotifyUrl": "7oPftvlwr6VrsViSDV7fJY",
+    "about": "God's favorite band 🙏"
+  },
+  {
+    "id": "45",
+    "spotifyUrl": "2ye2Wgw4gimLv2eAKyk1NB",
+    "about": "Metallica formed in 1981 by drummer Lars Ulrich and guitarist and vocalist James Hetfield and has become one of the most influential and commercially successful rock bands in history, having sold 120 million albums worldwide and generating more than 15 billion streams while playing to millions of fans on literally all seven continents. "
+  },
+  {
+    "id": "46",
+    "spotifyUrl": "4gzpq5DPGxSnKTe4SA8HAU",
+    "about": "Coldplay formed in London in late 1997. The band have gone on to become one of the most popular acts in the world, selling more than 100 million albums and releasing a long line of hits such as Yellow, Clocks, Fix You, Paradise, Viva La Vida, A Sky Full Of Stars, Hymn For The Weekend, Something Just Like This and Higher Power."
+  },
+  {
+    "id": "47",
+    "spotifyUrl": "04gDigrS5kc9YWfZHwBETP",
+    "about": "Maroon 5 -- and, specifically, its frontman  -- became the face of blue-eyed soul in the 21st century, managing to navigate shifting trends in music and fashion to be one of the biggest pop bands of their generation."
+  },
+  {
+    "id": "48",
+    "spotifyUrl": "3YQKmKGau1PzlVlkL1iodx",
+    "about": "Grammy-Award winning band, Twenty One Pilots, have shifted music and culture with an ever-evolving vision."
+  },
+  {
+    "id": "49",
+    "spotifyUrl": "22bE4uQ6baNwSHPVcDxLCe",
+    "about": "By the time the Rolling Stones began calling themselves the World's Greatest Rock & Roll Band in the late '60s, they had already staked out an impressive claim on the title."
+  },
+  {
+    "id": "50",
+    "spotifyUrl": "12Chz98pHFMPJEknJQMWvI",
+    "about": "— Will of the People —"
+  },
+  {
+    "id": "51",
+    "spotifyUrl": "7jy3rLJdDQY21OgRLCZ9sD",
+    "about": "With alt-rock anthems heavy on melody and personality, Foo Fighters have grown from 's humble solo project into one of the biggest -- and most enduring -- acts in modern rock."
+  },
+  {
+    "id": "52",
+    "spotifyUrl": "69GGBxA162lTqCwzJG5jLp",
+    "about": "Grammy Award-winning and Billboard Chart topping artist/producer duo, The Chainsmokers, have evolved into a dominating musical force with a diverse repertoire of songs that have led them to become one of music’s hottest recording artists. Comprised of Alex Pall and Drew Taggart, their signature sound deftly reaches across indie, progressive and pop realms."
+  }
+]
