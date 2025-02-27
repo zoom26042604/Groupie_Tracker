@@ -29,11 +29,13 @@
 
 
     <div class="artist-colum">
+        <h2 class="Band-Member">Band-Member</h2>
         <ul class="artist-member">
             {{range .Artist.Members}}
                 <li>{{.}}</li>
             {{end}}
         </ul>
+        <h2 class="Band-Member">Info</h2>
         <p><strong>First Album:</strong> {{.Artist.FirstAlbum | formatDate}}</p>
         <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
     </div>
@@ -42,16 +44,15 @@
         <div class="location-container">
 
 
-            <div id="mapSection" class="map-section hidden">
-                <div id="map">
-                    <script>
-                        let locations = {{ .Locations.Locations }}
-                    </script>
-                    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
-                    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
-                    <script src="/static/js/map.js"></script>
-                </div>
-            </div>
+
+            <div id="map"></div>
+
+            <script>
+                let locations = {{ .Locations.Locations }}
+            </script>
+            <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
+            <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+            <script src="/static/js/map.js"></script>
         </div>
 
     </div>
