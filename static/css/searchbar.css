@@ -27,8 +27,7 @@ header {
 .search{
     --pading: 10px;
 
-    position: absolute;
-    right: 20px;
+    position: relative;
     width: max-content;
     display: flex;
     align-items: center;
@@ -44,6 +43,7 @@ header {
 }
 
 .search-input{
+
     font-size: 16px;
     font-family: 'Lexend' , sans-serif;
     color: #333333;
@@ -60,10 +60,8 @@ header {
 }
 
 form {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
+    position: relative;
+    margin-left: 0;
 }
 
 .suggestions {
@@ -72,7 +70,7 @@ form {
     position: absolute;
     width: 100%;
     z-index: 1000;
-    top: 100%; /* Position the suggestions below the search bar */
+    top: 100%;
 }
 
 .suggestions div {
@@ -94,4 +92,28 @@ form {
 
 .suggestions div:hover {
     background-color: rgba(0, 0, 0, 0.1);
+}
+
+.filter-button {
+    background: #57d53b;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+.filter-button i {
+    color: white;
+    font-size: 14px;
+}
+
+.filter-button:hover {
+    background: #4bc132;
+    transform: scale(1.05);
 }

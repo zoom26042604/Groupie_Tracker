@@ -5,83 +5,92 @@
     <title>{{.Artist.Name}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/artistPage.css">
-    <link rel="stylesheet" href="/static/css/searchbar.css">
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+    <script src="/static/js/slide.js"></script>
 </head>
 <body>
+
+
+<button class="retour" onclick="window.history.back()">Back</button>
+<h1>{{.Artist.Name}}</h1>
+
 <div class="container">
-    <h1>{{.Artist.Name}}</h1>
 
-    <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" class="artist-image">
 
-    <h2 class="section-title">Band Members</h2>
-    <ul>
-        {{range .Artist.Members}}
-            <li>{{.}}</li>
-        {{end}}
-    </ul>
 
-    <h2 class="section-title">Info</h2>
-    <div class="info-section">
+
+    <div class="img-colum">
+
+        <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" class="artist-image">
+
+    </div>
+
+
+
+    <div class="artist-colum">
+        <h2 class="Band-Member">Band-Member</h2>
+        <ul class="artist-member">
+            {{range .Artist.Members}}
+                <li>{{.}}</li>
+            {{end}}
+        </ul>
+        <h2 class="Band-Member">Info</h2>
         <p><strong>First Album:</strong> {{.Artist.FirstAlbum | formatDate}}</p>
         <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
-    </div>
-
-    <h2 class="section-title">Tour Date and Locations</h2>
-    <ul class="tour-dates">
-        {{range $location, $dates := .Relations.DatesLocations}}
-            <li>
-                <div class="location">{{ $location | formatLocation }}</div>
-                <ul class="dates">
-                    {{range $dates}}
-                        <li>{{. | removeAsterisks | formatDate}}</li>
-                    {{end}}
-                </ul>
-            </li>
-        {{end}}
-    </ul>
-</div>
-<div class="location-container">
-
-    <input type="checkbox" id="map-toggle" class="map-toggle-checkbox">
-
-
-    <label for="map-toggle" class="toggle-map-btn">Afficher la carte</label>
-
-    <div id="mapSection" class="map-section hidden">
-        <div id="map">
-            <script>
-                let locations = {{ .Locations.Locations }}
-            </script>
-            <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
-            <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
-            <script src="/static/js/map.js"></script>
+        <div class="spotify-button-container">
+            <a href="{{.Artist.SpotifyURL}}">
+                <button class="spotify-button">Spotify</button>
+            </a>
         </div>
-    </div>
-</div>
-<form action="/search" method="GET">
-    <div class="search">
-        <span class="material-symbols-outlined"> search </span>
-        <input class="search-input" type="search" name="query" placeholder="search" oninput="showSuggestions(this.value)">
-        <div class="suggestions" id="suggestions"></div>
-    </div>
-</form>
-<script>
-    function showSuggestions(query) {
-        let suggestionsDiv = document.getElementById('suggestions');
-        if (query.length < 1) {
-            suggestionsDiv.innerHTML = '';
-            return;
-        }
 
-        fetch('/suggestions?query=' + encodeURIComponent(query))
-            .then(response => response.text())
-            .then(html => {
-                suggestionsDiv.innerHTML = html;
-            });
-    }
-</script>
+    </div>
+
+
+    <div class="location-container">
+
+
+
+        <div id="map"></div>
+
+        <script>
+            let locations = {{ .Locations.Locations }}
+        </script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
+        <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+        <script src="/static/js/map.js"></script>
+    </div>
+
+</div>
+
+
+<h2 class="section-title">Tour locations & Dates</h2>
+
+<div class="slider-container">
+
+
+    <div class="slider" id="locationSlider">
+        {{range .Locations.Locations}}
+            <div class="slide">{{. | formatLocation}}</div>
+        {{end}}
+
+    </div>
+    <div class="slider" id="dateSlider">
+        {{range .Dates.Dates}}
+            <div class="slide">{{. | removeAsterisks | formatDate}}</div>
+        {{end}}
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
 </body>
 </html>
