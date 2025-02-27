@@ -219,3 +219,20 @@ li:hover {
 .retour:hover {
     background-color: #57d53b;
 }
+
+
+.spotify-button {
+    display: inline-block;
+    background-color: #1DB954;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.spotify-button:hover {
+    background-color: #1ED760;
+    text-decoration: none;
+}

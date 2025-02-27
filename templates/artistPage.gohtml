@@ -38,6 +38,12 @@
         <h2 class="Band-Member">Info</h2>
         <p><strong>First Album:</strong> {{.Artist.FirstAlbum | formatDate}}</p>
         <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+        <div class="spotify-button-container">
+            <a href="{{.Artist.SpotifyURL}}">
+                <button class="spotify-button">Spotify</button>
+            </a>
+        </div>
+
     </div>
 
 

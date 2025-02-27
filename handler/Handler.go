@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -422,4 +424,26 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func GetSpotifyURL() []GetAPI.ArtistData {
+	// Charger le fichier JSON
+	file, err := os.Open("./static/JS/info.json")
+	if err != nil {
+		fmt.Println("error: ", err)
+	}
+	defer file.Close()
+
+	fileContents, _ := ioutil.ReadAll(file)
+
+	// Décoder le JSON
+	var spotifyData []GetAPI.ArtistData
+
+	json.Unmarshal(fileContents, &spotifyData)
+
+	for i := 0; i < len(spotifyData); i++ {
+		spotifyData[i].SpotifyURL = "https://open.spotify.com/intl-fr/artist/" + spotifyData[i].SpotifyURL
+	}
+
+	return spotifyData
 }
