@@ -19,7 +19,9 @@
 This project was developed during the Groupie-Tracker project, by Ynov Campus. The goal was to create a Website using Go templates to learn how to handle and use API.
 
 We decided to add some features to the site, such as:
-- 
+- a homePage to show ten artist at random
+- a search bar to find your favorite artist
+- a about to know about the project and the team
 
 For the theme of the site we decided to take a bit of inspiration in a well known site called spotify
 
@@ -39,7 +41,7 @@ go run main.go
 ```
 
 2. Open your browser and go to `http://localhost:8080/` to visit the site and find your favorite Band and Artist.
-
+![alt text](/static/img/presentation_image.png)
 ---
 
 ## 💻 Technologies
