@@ -1,0 +1,119 @@
+.search:focus-within{
+    box-shadow: 0 0 2px rgba(0,0,0,0.75);
+}
+
+.search-input::placeholder,
+.search-icon{
+    color:rgba(0,0,0,0.5);
+}
+
+header {
+    position: relative;
+    padding: 1rem;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-form {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.search{
+    --pading: 10px;
+
+    position: relative;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    padding: var(--pading);
+    border-radius: 28px;
+    background: #57d53b;
+    transition: box-shadow 0.25s;
+
+}
+
+.search:focus-within{
+    box-shadow: 0 0 2px rgba(0,0,0,0.75);
+}
+
+.search-input{
+
+    font-size: 16px;
+    font-family: 'Lexend' , sans-serif;
+    color: #333333;
+    margin-left: var(--pading);
+    outline: none;
+    border: none;
+    background: transparent;
+    flex: 1;
+}
+
+.search-input::placeholder,
+.search-icon{
+    color:rgba(0,0,0,0.5);
+}
+
+form {
+    position: relative;
+    margin-left: 0;
+}
+
+.suggestions {
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+    top: 100%;
+}
+
+.suggestions div {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    color: #333333;
+    background: #57d53b;
+    transition: background-color 0.25s;
+}
+
+.suggestions div img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.suggestions div:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.filter-button {
+    background: #57d53b;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+.filter-button i {
+    color: white;
+    font-size: 14px;
+}
+
+.filter-button:hover {
+    background: #4bc132;
+    transform: scale(1.05);
+}

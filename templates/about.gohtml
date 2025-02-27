@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>POSTIFY</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>About</title>
+    <link rel="stylesheet" href="/static/css/about.css">
     <link rel="stylesheet" href="/static/css/searchbar.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
+
 <body>
 <nav>
     <div class="nav-container">
@@ -40,32 +44,26 @@
         </form>
     </div>
 </nav>
-<ul>
-    {{range .Artists}}
-        <li>
-            <a href="/artist/{{.ID}}">
-                <img src="{{.Image}}" alt="Artist cover">
-                <div class="artist-info">
-                    <h3>{{.Name}}</h3>
-                </div>
-            </a>
-        </li>
-    {{end}}
-</ul>
-<script>
-    function showSuggestions(query) {
-        let suggestionsDiv = document.getElementById('suggestions');
-        if (query.length < 1) {
-            suggestionsDiv.innerHTML = '';
-            return;
-        }
+<div class="about-container">
+    <h2>Qu'est-ce POSTIFY ?</h2>
+    <h3>POSTIFY est un site internet qui réfère un nombre limité d'artiste.</h3>
+    <h3>Ce site vas pouvoir vous montrer le nom de chaque artiste dans chaque groupe.</h3>
+    <h3>Mais pas que, vous pourrez voir ou chaque artistes se sont produits et quand. Cela grâce a une maps interactive</h3>
+    <h4>Réalisé par : Raphael BONNET, Nathan FERRE & Tom</h4>
+</div>
+    <script>
+        function showSuggestions(query) {
+            let suggestionsDiv = document.getElementById('suggestions');
+            if (query.length < 1) {
+                suggestionsDiv.innerHTML = '';
+                return;
+            }
 
-        fetch('/suggestions?query=' + encodeURIComponent(query))
-            .then(response => response.text())
-            .then(html => {
-                suggestionsDiv.innerHTML = html;
-            });
-    }
-</script>
+            fetch('/suggestions?query=' + encodeURIComponent(query))
+                .then(response => response.text())
+                .then(html => {
+                    suggestionsDiv.innerHTML = html;
+                });
+        }
+    </script>
 </body>
-</html>
