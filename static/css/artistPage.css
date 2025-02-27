@@ -94,19 +94,21 @@ li:hover {
 }
 
 
-.slider-1 {
+.slider-container {
     max-width: 600px;
-    margin: 100px auto;
+    margin: 30px auto;
     overflow: hidden;
+
 }
 
-.slider-1 .slider {
+
+.slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
 }
 
-.slider-1 .slide {
-    font-family: "Century Gothic";
+
+.slide {
     flex: 0 0 100%;
     background: transparent;
     padding: 72px 0;
@@ -114,30 +116,10 @@ li:hover {
     font-size: 45px;
     color: #f1f1f1;
     min-width: 100%;
-
 }
 
-.slider-2 {
-    max-width: 600px;
-    margin: 100px auto;
-    overflow: hidden;
-}
-
-.slider-2 .slider2 {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-}
-
-.slider-2 .slide2 {
-    font-family: "Century Gothic";
-    flex: 0 0 100%;
+.slider-2 .slide {
     background: transparent;
-    padding: 72px 0;
-    text-align: center;
-    font-size: 45px;
-    color: #f1f1f1;
-    min-width: 100%;
-
 }
 
 

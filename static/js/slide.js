@@ -1,38 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const slider = document.getElementById('locationSlider');
-    const slides = slider.children;
-    const slideCount = slides.length;
-    let currentSlide = 0;
+    // Slider de localisations
+    const locationSlider = document.getElementById('locationSlider');
+    const locationSlides = locationSlider.children;
+    const locationSlideCount = locationSlides.length;
+    let currentLocationSlide = 0;
 
-    if (slideCount <= 1) return;
+    // Slider de dates
+    const dateSlider = document.getElementById('dateSlider');
+    const dateSlides = dateSlider.children;
+    const dateSlideCount = dateSlides.length;
+    let currentDateSlide = 0;
 
-    const slideDuration = 3000;
-
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slideCount;
-        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    // Fonction pour passer à la slide suivante pour les localisations
+    function nextLocationSlide() {
+        currentLocationSlide = (currentLocationSlide + 1) % locationSlideCount;
+        locationSlider.style.transform = `translateX(-${currentLocationSlide * 100}%)`;
     }
 
-    setInterval(nextSlide, slideDuration);
-});
-
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const slider2 = document.getElementById('dateSlider');
-    const slides2 = slider2.children;
-    const slideCount2 = slides2.length;
-    let currentSlide2 = 0;
-
-    if (slideCount2 <= 1) return;
-
-    const slideDuration = 3000;
-
-    function nextSlide() {
-        currentSlide2 = (currentSlide2 + 1) % slideCount2;
-        slider2.style.transform = `translateX(-${currentSlide2 * 100}%)`;
+    // Fonction pour passer à la slide suivante pour les dates
+    function nextDateSlide() {
+        currentDateSlide = (currentDateSlide + 1) % dateSlideCount;
+        dateSlider.style.transform = `translateX(-${currentDateSlide * 100}%)`;
     }
 
-    setInterval(nextSlide, slideDuration);
+    // Défilement automatique toutes les 3 secondes pour les deux sliders
+    setInterval(nextLocationSlide, 3000);
+    setInterval(nextDateSlide, 3000);
 });
