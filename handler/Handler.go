@@ -247,6 +247,7 @@ func (s *Server) StartServer() {
 	})
 
 	http.HandleFunc("/search", s.SearchHandler)
+	http.HandleFunc("/suggestions", s.suggestionsHandler)
 
 	port := ":8080"
 	fmt.Printf("Server starting on http://localhost%s\n", port)
@@ -421,5 +422,31 @@ func (s *Server) SearchHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	if err := tmpl.Execute(w, data); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func (s *Server) suggestionsHandler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query().Get("query")
+	if query == "" {
+		return
+	}
+
+	var suggestions []GetAPI.ArtistAPI
+	for _, artist := range s.Artists {
+		if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
+			suggestions = append(suggestions, artist)
+			continue
+		}
+		for _, member := range artist.Members {
+			if strings.Contains(strings.ToLower(member), strings.ToLower(query)) {
+				suggestions = append(suggestions, artist)
+				break
+			}
+		}
+	}
+
+	w.Header().Set("Content-Type", "text/plain")
+	for _, suggestion := range suggestions {
+		fmt.Fprintf(w, "<div onclick=\"window.location.href='/artist/%d'\">%s</div>", suggestion.ID, suggestion.Name)
 	}
 }

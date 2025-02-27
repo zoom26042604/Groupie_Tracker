@@ -54,13 +54,9 @@ header {
     flex: 1;
 }
 
-.header-container,
-table {
-    margin-top: 60px;
-}
-
-.material-symbols-outlined {
-    color: #666;
+.search-input::placeholder,
+.search-icon{
+    color:rgba(0,0,0,0.5);
 }
 
 form {
@@ -68,4 +64,34 @@ form {
     top: 20px;
     right: 20px;
     z-index: 1000;
+}
+
+.suggestions {
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+    top: 100%; /* Position the suggestions below the search bar */
+}
+
+.suggestions div {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    color: #333333;
+    background: #57d53b;
+    transition: background-color 0.25s;
+}
+
+.suggestions div img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.suggestions div:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }

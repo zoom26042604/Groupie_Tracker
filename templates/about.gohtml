@@ -29,10 +29,26 @@
     <h3>Mais pas que , vous pourrez voir ou chaque artistes se sont produits et quand. Cela grâce a une maps interactive </h3>
     <h4> Réalisé par : Raphael BONNET , Nathan FERRE & Tom </h4>
     <h3></h3>
-    <form>
+    <form action="/search" method="GET">
         <div class="search">
             <span class="material-symbols-outlined"> search </span>
-            <input class="search-input" type="search" placeholder="search">
+            <input class="search-input" type="search" name="query" placeholder="search" oninput="showSuggestions(this.value)">
+            <div class="suggestions" id="suggestions"></div>
         </div>
     </form>
+    <script>
+        function showSuggestions(query) {
+            let suggestionsDiv = document.getElementById('suggestions');
+            if (query.length < 1) {
+                suggestionsDiv.innerHTML = '';
+                return;
+            }
+
+            fetch('/suggestions?query=' + encodeURIComponent(query))
+                .then(response => response.text())
+                .then(html => {
+                    suggestionsDiv.innerHTML = html;
+                });
+        }
+    </script>
 </body>
