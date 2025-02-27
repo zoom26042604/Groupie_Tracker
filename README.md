@@ -27,6 +27,9 @@ For the theme of the site we decided to take a bit of inspiration in a well know
 
 The final project repository can be founded [here](https://github.com/zoom26042604/Groupie_Tracker)
 
+And our presentation for the project can be found [here](https://www.canva.com/design/DAGgBIMDB50/dKuQRZQub2fcFYP97AXzcg/edit?utm_content=DAGgBIMDB50&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+
 ---
 
 ## 🚀 How to run the project
