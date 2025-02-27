@@ -196,7 +196,12 @@ li:hover {
     font-size: 16px;
 }
 
-
+.button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
 .artist-jsp {
     display: flex;
     align-items: center;
@@ -204,17 +209,37 @@ li:hover {
 }
 
 .artist-members {
-    list-style-type: none; /* Supprime les puces */
+    list-style-type: none; 
     padding: 0;
     margin: 0;
 }
 
 .artist-members li {
-    background-color: #f0f0f0; /* Fond pour le cadre */
+    background-color: #f0f0f0;
     padding: 10px 15px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-weight: bold;
-    text-align: left; /* Alignement du texte à gauche */
-    width: fit-content; /* Ajuste la largeur au contenu */
+    text-align: left;
+    width: fit-content;
+}
+.spotify-button-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.spotify-button {
+    display: inline-block;
+    background-color: #1DB954;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.spotify-button:hover {
+    background-color: #1ED760;
+    text-decoration: none;
 }

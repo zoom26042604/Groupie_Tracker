@@ -18,7 +18,6 @@
     <h1>{{.Artist.Name}}</h1>
 
 
-
     <h2 class="section-title"></h2>
     <div class="artist-jsp">
         <ul class="artist-member">
@@ -32,19 +31,23 @@
 
     <h2 class="section-title">Info</h2>
     <div class="info-section">
+        <div class="spotify-button-container">
+            <a href="{{.Artist.SpotifyURL}}">
+                <button class="spotify-button">Spotify</button>
+            </a>
+        </div>
         <p><strong>First Album:</strong> {{.Artist.FirstAlbum | formatDate}}</p>
         <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
     </div>
-
 
 
     <h2 class="section-title">Locations</h2>
 
     <div class="slider-container slider-1">
         <div class="slider" id="locationSlider">
-                {{range .Locations.Locations}}
-                   <div class="slide">{{. | formatLocation}}</div>
-                {{end}}
+            {{range .Locations.Locations}}
+                <div class="slide">{{. | formatLocation}}</div>
+            {{end}}
         </div>
     </div>
 
@@ -58,7 +61,7 @@
         <div id="mapSection" class="map-section hidden">
             <div id="map">
                 <script>
-                   let locations = {{ .Locations.Locations }}
+                    let locations = {{ .Locations.Locations }}
                 </script>
                 <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
                 <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
@@ -67,14 +70,15 @@
         </div>
 
 
+        <h2 class="section-title">Tour Dates</h2>
 
-    <h2 class="section-title">Tour Dates</h2>
+        <div class="slider-container slider-2">
+            <div class="slider2" id="dateSlider">
+                {{range .Dates.Dates}}
+                    <div class="slide2">{{. | removeAsterisks | formatDate}}</div>
+                {{end}}
 
-    <div class="slider-container slider-2">
-        <div class="slider2" id="dateSlider">
-            {{range .Dates.Dates}}
-                <div class="slide2">{{. | removeAsterisks | formatDate}}</div>
-            {{end}}
+            </div>
 
         </div>
 
@@ -82,7 +86,6 @@
 
 </div>
 
-</div>
-
 </body>
 </html>
+

@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -122,7 +124,7 @@ func (s *Server) StartServer() {
 		log.Fatalf("Failed to parse template: %v", err)
 	}
 
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
@@ -188,6 +190,7 @@ func (s *Server) StartServer() {
 	})
 
 	http.HandleFunc("/artist/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("ARTIST HANDLER CALLED")
 		id := r.URL.Path[len("/artist/"):]
 		artistID, err := strconv.Atoi(id)
 		if err != nil {
@@ -196,6 +199,10 @@ func (s *Server) StartServer() {
 		}
 
 		artistData, ok := s.ArtistDataMap[artistID]
+		artistData.Artist.SpotifyURL = GetSpotifyURL()[artistID-1].SpotifyURL
+		// show artist settings in the terminal
+		GetAPI.ShowArtistData(artistData.Artist)
+
 		if !ok {
 			http.NotFound(w, r)
 			return
@@ -357,4 +364,26 @@ func formatLocation(location string) string {
 	countryOrContinent := strings.ToUpper(words[len(words)-1])
 
 	return fmt.Sprintf("%s, %s", city, countryOrContinent)
+}
+
+func GetSpotifyURL() []GetAPI.ArtistData {
+	// Charger le fichier JSON
+	file, err := os.Open("./static/JS/info.json")
+	if err != nil {
+		fmt.Println("error: ", err)
+	}
+	defer file.Close()
+
+	fileContents, _ := ioutil.ReadAll(file)
+
+	// Décoder le JSON
+	var spotifyData []GetAPI.ArtistData
+
+	json.Unmarshal(fileContents, &spotifyData)
+
+	for i := 0; i < len(spotifyData); i++ {
+		spotifyData[i].SpotifyURL = "https://open.spotify.com/intl-fr/artist/" + spotifyData[i].SpotifyURL
+	}
+
+	return spotifyData
 }

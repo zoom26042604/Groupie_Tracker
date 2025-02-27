@@ -2,9 +2,11 @@ package GetAPI
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 type APIClient struct {
@@ -84,4 +86,34 @@ func GetCombinedDataByID(artists []ArtistAPI, locations []LocationsAPI, dates []
 	}
 
 	return combinedData, nil
+}
+
+func GetSpotifyURL(artistID string) (string, error) {
+	// Charger le fichier JSON
+	file, err := os.Open("JS/info.json")
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	// Décoder le JSON
+	var spotifyData []struct {
+		ID         string `json:"id"`
+		SpotifyURL string `json:"spotifyUrl"`
+		MusicURL   string `json:"musicUrl"`
+	}
+
+	decoder := json.NewDecoder(file)
+	if err := decoder.Decode(&spotifyData); err != nil {
+		return "", err
+	}
+
+	// Trouver l'URL Spotify correspondant à l'ID de l'artiste
+	for _, item := range spotifyData {
+		if item.ID == artistID {
+			return "https://open.spotify.com/artist/" + item.SpotifyURL, nil
+		}
+	}
+
+	return "", errors.New("URL Spotify non trouvée pour cet artiste")
 }
