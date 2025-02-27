@@ -41,6 +41,7 @@ go run main.go
 ```
 
 2. Open your browser and go to `http://localhost:8080/` to visit the site and find your favorite Band and Artist.
+
 ![alt text](/static/img/presentation_image.png)
 ---
 
