@@ -10,31 +10,57 @@
     <script src="/static/js/slide.js"></script>
 </head>
 <body>
+
+
+<button class="retour" onclick="window.history.back()">Back</button>
+<h1>{{.Artist.Name}}</h1>
+
 <div class="container">
-    <button class="retour" onclick="window.history.back()">Back</button>
-    <h1>{{.Artist.Name}}</h1>
 
 
 
-    <h2 class="section-title">Band Members</h2>
-    <div class="artist-jsp">
+
+    <div class="img-colum">
+
+        <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" class="artist-image">
+
+    </div>
+
+
+
+    <div class="artist-colum">
         <ul class="artist-member">
             {{range .Artist.Members}}
                 <li>{{.}}</li>
             {{end}}
         </ul>
-        <img src="{{.Artist.Image}}" alt="{{.Artist.Name}}" class="artist-image">
-        <div class="info-section">
-            <p><strong>First Album:</strong> {{.Artist.FirstAlbum | formatDate}}</p>
-            <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+        <p><strong>First Album:</strong> {{.Artist.FirstAlbum | formatDate}}</p>
+        <p><strong>Creation Date:</strong> {{.Artist.CreationDate}}</p>
+    </div>
+
+
+        <div class="location-container">
+
+
+            <div id="mapSection" class="map-section hidden">
+                <div id="map">
+                    <script>
+                        let locations = {{ .Locations.Locations }}
+                    </script>
+                    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
+                    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+                    <script src="/static/js/map.js"></script>
+                </div>
+            </div>
         </div>
+
     </div>
 
 
     <h2 class="section-title">Tour locations & Dates</h2>
 
     <div class="slider-container">
-        <div class="grid">
+
 
             <div class="slider" id="locationSlider">
                 {{range .Locations.Locations}}
@@ -48,31 +74,11 @@
                 {{end}}
             </div>
 
-        </div>
 
 
 
     </div>
 
-    <div class="location-container">
-
-        <input type="checkbox" id="map-toggle" class="map-toggle-checkbox">
-
-
-        <label for="map-toggle" class="toggle-map-btn">Afficher la carte</label>
-
-        <div id="mapSection" class="map-section hidden">
-            <div id="map">
-                <script>
-                    let locations = {{ .Locations.Locations }}
-                </script>
-                <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
-                <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
-                <script src="/static/js/map.js"></script>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 

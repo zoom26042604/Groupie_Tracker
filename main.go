@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	server := handler.NewServer(12)
+	server := handler.NewServer(16)
 	apiClient := GetAPI.NewAPIClient("https://groupietrackers.herokuapp.com")
 	if err := server.LoadData(apiClient); err != nil {
 		log.Fatalf("Failed to fetch initial data: %v", err)
