@@ -203,3 +203,20 @@ li:hover {
     text-align: left; /* Alignement du texte à gauche */
     width: fit-content; /* Ajuste la largeur au contenu */
 }
+
+
+.retour {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #57d53b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.retour:hover {
+    background-color: #57d53b;
+}
