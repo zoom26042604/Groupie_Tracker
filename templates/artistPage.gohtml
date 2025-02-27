@@ -36,6 +36,9 @@
                 <div class="slide">{{. | formatLocation}}</div>
             {{end}}
         </div>
+
+    </div>
+    <div class="slider-container slider-2">
         <div class="slider2" id="dateSlider">
             {{range .Dates.Dates}}
                 <div class="slide2">{{. | removeAsterisks | formatDate}}</div>
@@ -44,26 +47,30 @@
         </div>
 
     </div>
-
-</div>
-
     <div class="location-container">
 
-    <input type="checkbox" id="map-toggle" class="map-toggle-checkbox">
+        <input type="checkbox" id="map-toggle" class="map-toggle-checkbox">
 
 
-    <label for="map-toggle" class="toggle-map-btn">Afficher la carte</label>
+        <label for="map-toggle" class="toggle-map-btn">Afficher la carte</label>
 
-    <div id="mapSection" class="map-section hidden">
-        <div id="map">
-            <script>
-                let locations = {{ .Locations.Locations }}
-            </script>
-            <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
-            <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
-            <script src="/static/js/map.js"></script>
+        <div id="mapSection" class="map-section hidden">
+            <div id="map">
+                <script>
+                    let locations = {{ .Locations.Locations }}
+                </script>
+                <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.2/mapbox-gl.js"></script>
+                <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+                <script src="/static/js/map.js"></script>
+            </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
 </body>
 </html>
