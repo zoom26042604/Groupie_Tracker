@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="readmeFiles/banner.png" alt="banner"/>
+  <img src="static/img/TEXT%20LOGO.PNG" alt="banner"/>
 </p>
 
 ---
@@ -8,31 +8,22 @@
 
 
 1. [**📚 About the project**](#-about-the-project)
-2. [**🎥 Demo**](#-demo)
-3. [**🚀 How to run the project**](#-how-to-run-the-project)
-4. [**💻 Technologies**](#-technologies)
-5. [**👥 Credits**](#-credits)
+2. [**🚀 How to run the project**](#-how-to-run-the-project)
+3. [**💻 Technologies**](#-technologies)
+4. [**👥 Credits**](#-credits)
 
 ---
 
 ## 📚 About the project
 
-This project was developed during the HangMan-Web project, by Ynov Campus. The goal was to create a HangMan game using Go templates.
+This project was developed during the Groupie-Tracker project, by Ynov Campus. The goal was to create a Website using Go templates to learn how to handle and use API.
 
-We decided to add some features to the game, such as:
-- 🏆 A leaderboard/Scoreboard
-- 👥 A multiplayer mode
-- 📜 A History of the games played
+We decided to add some features to the site, such as:
+- 
 
-We also decided to choose a theme for the game, which is "Chalk and Blackboard", so the game is displayed as if it was written on a blackboard.
+For the theme of the site we decided to take a bit of inspiration in a well known site called spotify
 
-The final project repository can be founded [here](https://ytrack.learn.ynov.com/git/lalucas/hangman-web)
-
----
-
-## 🎥 Demo
-
-![PlaceHolder](https://i.imgur.com/fVVQMqG.gif)
+The final project repository can be founded [here](https://github.com/zoom26042604/Groupie_Tracker)
 
 ---
 
@@ -42,14 +33,12 @@ To run the project, you will need to have Go installed on your computer. If you 
 
 1. Clone the repository:
 ```bash
-git clone https://ytrack.learn.ynov.com/git/lalucas/hangman-web.git
-cd hangman-web
-go run .\cmd\main.go
+git clone https://github.com/zoom26042604/Groupie_Tracker.git
+cd Groupie_Tracker
+go run main.go
 ```
 
-2. Open your browser and go to `http://localhost:8080/` to play the game.
-
-if you want to play the game in multiplayer mode, you will need to be at least 2 players on the same network. and enter the ip address of the server in the browser.
+2. Open your browser and go to `http://localhost:8080/` to visit the site and find your favorite Band and Artist.
 
 ---
 
@@ -58,7 +47,8 @@ if you want to play the game in multiplayer mode, you will need to be at least 2
 The project was developed using the following technologies:
 - [Go](https://golang.org/)
 - [GoHTML](https://pkg.go.dev/html/template)
-- [Json](https://pkg.go.dev/encoding/json)
+- [CSS]()
+- [JavaScript](https://www.javascript.com/)
 
 ---
 
@@ -66,8 +56,6 @@ The project was developed using the following technologies:
 
 This project was developed by:
 <br>
-<a href="https://github.com/Oiha-dev"><img src="https://avatars.githubusercontent.com/u/115953539" alt="Gauthier Cenes" width="69" height="69"/></a>
-<a href="https://github.com/LucasAstley"><img src="https://avatars.githubusercontent.com/u/75446972" alt="Lucas Lasbennes" width="69" height="69"/></a>
-
-The font used in the project is [Chalkboard](https://www.dafont.com/neat-chalk.font) by [Darrell Flood](https://www.hawtpixel.com).<br>
-You can find the background image [here](https://unsplash.com/fr/photos/un-tableau-noir-avec-un-tableau-noir-et-des-crayons-de-couleur-065tsEqQj6Y).
+<a href="https://github.com/zoom26042604"><img src="https://avatars.githubusercontent.com/u/186803356?v=4" alt="Nathan FERRE" width="69" height="69"/></a>
+<a href="https://github.com/LeRaphouu"><img src="https://avatars.githubusercontent.com/u/188911609?v=4" alt="Raphael BONNET" width="69" height="69"/></a>
+<a href="https://github.com/tompass8"><img src="https://avatars.githubusercontent.com/u/183885775?v=4" alt="Tom " width="69" height="69"/></a>
