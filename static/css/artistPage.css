@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-    text-align: center;
+
     font-family: "Century Gothic";
     margin: 0 auto;
     background-color: #1E1E1E;
@@ -81,7 +81,7 @@ li:hover {
 }
 
 .info-section {
-    background-color: #282828;
+    background-color: #57d53b;
     padding: 15px;
     border-radius: 8px;
     margin-top: 20px;
@@ -94,23 +94,26 @@ li:hover {
 }
 
 
+
+
 .slider-container {
+
+    border-radius: 20px;
+    background-color: transparent;
     max-width: 600px;
     margin: 30px auto;
-    overflow: hidden;
 
 }
 
 
 .slider {
-    display: flex;
+   display: flex;
     transition: transform 0.5s ease-in-out;
 }
 
 
 .slide {
     flex: 0 0 100%;
-    background: transparent;
     padding: 72px 0;
     text-align: center;
     font-size: 45px;
