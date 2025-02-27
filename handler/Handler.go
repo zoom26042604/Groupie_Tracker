@@ -224,6 +224,10 @@ func (s *Server) StartServer() {
 		}
 
 		artistData, ok := s.ArtistDataMap[artistID]
+		artistData.Artist.SpotifyURL = GetSpotifyURL()[artistID-1].SpotifyURL
+		// show artist settings in the terminal
+		GetAPI.ShowArtistData(artistData.Artist)
+
 		if !ok {
 			http.NotFound(w, r)
 			return
