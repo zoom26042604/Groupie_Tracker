@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -222,6 +224,9 @@ func (s *Server) StartServer() {
 		}
 
 		artistData, ok := s.ArtistDataMap[artistID]
+		artistData.Artist.SpotifyURL = GetSpotifyURL()[artistID-1].SpotifyURL
+		// show artist settings in the terminal
+		GetAPI.ShowArtistData(artistData.Artist)
 		if !ok {
 			http.NotFound(w, r)
 			return
@@ -449,4 +454,26 @@ func (s *Server) suggestionsHandler(w http.ResponseWriter, r *http.Request) {
 	for _, suggestion := range suggestions {
 		fmt.Fprintf(w, "<div onclick=\"window.location.href='/artist/%d'\">%s</div>", suggestion.ID, suggestion.Name)
 	}
+}
+
+func GetSpotifyURL() []GetAPI.ArtistData {
+	// Charger le fichier JSON
+	file, err := os.Open("./static/json/info.json")
+	if err != nil {
+		fmt.Println("error: ", err)
+	}
+	defer file.Close()
+
+	fileContents, _ := ioutil.ReadAll(file)
+
+	// Décoder le JSON
+	var spotifyData []GetAPI.ArtistData
+
+	json.Unmarshal(fileContents, &spotifyData)
+
+	for i := 0; i < len(spotifyData); i++ {
+		spotifyData[i].SpotifyURL = "https://open.spotify.com/intl-fr/artist/" + spotifyData[i].SpotifyURL
+	}
+
+	return spotifyData
 }
