@@ -23,7 +23,7 @@ We decided to add some features to the site, such as:
 - a search bar to find your favorite artist
 - a about to know about the project and the team
 
-For the theme of the site we decided to take a bit of inspiration in a well known site called spotify
+For the theme of the site we decided to take a bit of inspiration in a well known site called spotify but in thruth there are the one whom copied from us 
 
 The final project repository can be founded [here](https://github.com/zoom26042604/Groupie_Tracker)
 
