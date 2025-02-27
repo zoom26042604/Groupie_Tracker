@@ -52,6 +52,7 @@ The project was developed using the following technologies:
 - [GoHTML](https://pkg.go.dev/html/template)
 - [CSS]()
 - [JavaScript](https://www.javascript.com/)
+- [Mapbox](https://www.mapbox.com/)
 
 ---
 
