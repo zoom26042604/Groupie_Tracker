@@ -105,4 +105,4 @@ This project was developed by:
 <br>
 <a href="https://github.com/zoom26042604"><img src="https://avatars.githubusercontent.com/u/186803356?v=4" alt="Nathan FERRE" width="69" height="69"/></a>
 <a href="https://github.com/LeRaphouu"><img src="https://avatars.githubusercontent.com/u/188911609?v=4" alt="Raphael BONNET" width="69" height="69"/></a>
-<a href="https://github.com/tompass8"><img src="https://avatars.githubusercontent.com/u/183885775?v=4" alt="Tom " width="69" height="69"/></a>
+<a href="https://github.com/tompass8"><img src="https://avatars.githubusercontent.com/u/183885775?v=4" alt="Tom PASSERMAN " width="69" height="69"/></a>
