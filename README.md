@@ -29,6 +29,8 @@ The final project repository can be founded [here](https://github.com/zoom260426
 
 And our presentation for the project can be found [here](https://www.canva.com/design/DAGgBIMDB50/dKuQRZQub2fcFYP97AXzcg/edit?utm_content=DAGgBIMDB50&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
+And lastly our trello can be found [here](https://trello.com/invite/b/67602859ddbab9490a52b7ec/ATTIc68593987b3cf4f8af880611d2be9febA4F2F9EE/groupie-tracker)
+
 
 ---
 
@@ -48,6 +50,44 @@ go run main.go
 ![alt text](/static/img/presentation_image.png)
 ---
 
+## Project structure
+
+```bash
+Groupie_Tracker/
+├── GetAPI/
+│   ├── GetAPI.go
+│   ├── params.go
+── handler/
+│  ├── Handler.go
+├── static/
+│   ├── css/
+│   │   └── about.css
+│   │   └── artistPage.css
+│   │   └── searchbar.css
+│   │   └── searchPage.css
+│   │   └── style.css
+│   ├── img/
+│   │   ├── TEXT LOGO.PNG
+│   │   └── POSTIFY.png
+│   └── js/
+│       └── filtrevisibility.js
+│       └── map.js
+│       └── slide.js
+│   └── json/
+│       └── info.json
+├── templates/
+│   ├── index.gohtml
+│   └── artistPage.gohtml
+│   └── about.gohtml
+│   └── search.gohtml
+│   └── map.gohtml
+├── .gitignore
+├── go.mod
+├── main.go
+└── README.md
+```
+
+---
 ## 💻 Technologies
 
 The project was developed using the following technologies:

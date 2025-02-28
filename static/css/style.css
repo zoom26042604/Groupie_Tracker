@@ -45,21 +45,13 @@ nav {
 }
 
 .logo {
-    height: 35px;
+    height: 50px;
     width: auto;
 }
 
 .text {
-    height: 35px;
+    height: 50px;
     width: auto;
-}
-
-.nav-links {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    margin-right: 20px;
-    margin-left: auto;
 }
 
 .nav-links a {
@@ -156,35 +148,111 @@ li:hover .artist-info {
     opacity: 1;
 }
 
-@media (max-width: 768px) {
-    nav {
-        padding: 1rem;
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .nav-container {
+        padding: 0 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .logo-container {
+        margin: 0 auto 10px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .logo {
+        height: 45px;
+    }
+
+    .text {
+        height: 45px;
     }
 
     .nav-links {
-        margin-right: 150px;
-        gap: 1.5rem;
+        margin: 10px auto;
+        justify-content: center;
+        width: 100%;
     }
 
-    .nav-links a {
-        font-size: 0.85rem;
+    form {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
     }
 
-    .nav-links a i {
-        font-size: 1rem;
-    }
-
-    .nav-links a span {
-        font-size: 1rem;
-    }
-
-    .logo, .text {
-        height: 28px;
+    .search {
+        width: 100%;
+        max-width: 300px;
     }
 
     ul {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 1rem;
         padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    nav {
+        padding: 1rem 0.5rem;
+    }
+
+    .logo {
+        height: 40px;
+    }
+
+    .text {
+        height: 40px;
+    }
+
+    .nav-links {
+        gap: 1.5rem;
+    }
+
+    .nav-links a {
+        padding: 0.5rem 0.7rem;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .nav-links a i {
+        font-size: 1.5rem;
+    }
+
+    ul {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .artist-info h3 {
+        font-size: 1rem;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+
+    li:hover .artist-info {
+        opacity: 1;
+        padding: 0.7rem;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .logo-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .nav-links a i {
+        font-size: 1.7rem;
+    }
+
+    ul {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.8rem;
     }
 }
