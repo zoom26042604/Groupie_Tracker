@@ -5,51 +5,72 @@
     <title>Search</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/searchPage.css">
+    <link rel="stylesheet" href="/static/css/searchbar.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-<img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
-<img class="logo" src="/static/img/POSTIFY.png" alt="logo">
-
-<table>
-    <thead>
-    <tr>
-        <th><a href="/">Home</a></th>
-        <th><a href="/homePage">Artists</a></th>
-        <th><a href="/about">About</a></th>
-    </tr>
-    </thead>
-</table>
-
-<h1>Search Artists</h1>
-
-<div class="search-container">
-    <div class="search-input-wrapper">
-        <form method="GET" action="/search">
-            <input type="hidden" name="activeField" value="search">
-            <input type="text"
-                   id="search"
-                   name="query"
-                   placeholder="Search for an artist or a band..."
-                   oninput="this.form.submit()"
-                   value="{{.Query}}"
-                   list="searchSuggestions"
-                   class="search-input"
-                   {{if eq .ActiveField "search"}}autofocus{{end}}
-                    {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
-            <datalist id="searchSuggestions">
-                {{range .Artists}}
-                    {{$artistName := .Name}}
-                    <option value="{{.Name}} - Group"></option>
-                    {{if .Members}}
-                        {{range .Members}}
-                            <option value="{{. }} - Member">{{$artistName}}</option>
-                        {{end}}
-                    {{end}}
-                {{end}}
-            </datalist>
+<nav>
+    <div class="nav-container">
+        <div class="logo-container">
+            <img class="logo" src="/static/img/POSTIFY.png" alt="logo">
+            <img class="text" src="/static/img/TEXT LOGO.PNG" alt="logo">
+        </div>
+        <div class="nav-links">
+            <a href="/">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+            <a href="/homePage">
+                <i class="fas fa-music"></i>
+                Artists
+            </a>
+            <a href="/about">
+                <i class="fas fa-circle-info"></i>
+                About
+            </a>
+        </div>
+        <form action="/search" method="GET">
+            <div class="search">
+                <i class="fas fa-magnifying-glass search-icon"></i>
+                <input class="search-input" type="search" name="query" placeholder="search" oninput="showSuggestions(this.value)">
+                <button type="submit" class="filter-button">
+                    <i class="fas fa-filter"></i>
+                </button>
+                <div class="suggestions" id="suggestions"></div>
+            </div>
         </form>
     </div>
-    <button class="toggle-filters" aria-label="Toggle filters"></button>
+</nav>
+<div class="search-container">
+    <form method="GET" action="/search" class="search">
+        <input type="hidden" name="activeField" value="search">
+        <i class="fas fa-magnifying-glass search-icon"></i>
+        <input type="text"
+               id="search"
+               name="query"
+               placeholder="Search for an artist or a band..."
+               oninput="this.form.submit()"
+               value="{{.Query}}"
+               list="searchSuggestions"
+               class="search-input"
+               {{if eq .ActiveField "search"}}autofocus{{end}}
+                {{if .Query}}onfocus="this.setSelectionRange(this.value.length, this.value.length)"{{end}}>
+        <button type="button" class="toggle-filters" aria-label="Toggle filters">
+            <i class="fas fa-filter"></i>
+        </button>
+        <datalist id="searchSuggestions">
+            {{range .Artists}}
+                {{$artistName := .Name}}
+                <option value="{{.Name}} - Group"></option>
+                {{if .Members}}
+                    {{range .Members}}
+                        <option value="{{. }} - Member">{{$artistName}}</option>
+                    {{end}}
+                {{end}}
+            {{end}}
+        </datalist>
+    </form>
 </div>
 
 <form method="GET" action="/search" class="filters-section">
